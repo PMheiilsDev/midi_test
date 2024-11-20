@@ -1,0 +1,9 @@
+{
+    "cmake.buildBeforeRun": true,
+    "cmake.sourceDirectory": "${workspaceFolder}",
+    "files.associations": {
+        "stdlib.h": "c",
+        "tusb.h": "c",
+        "board_api.h": "c"
+    }
+}

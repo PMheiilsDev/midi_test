@@ -1,0 +1,5 @@
+C:/RP2040/dev/midi_test/build/_deps/picotool/picotool.exe
+C:/RP2040/dev/midi_test/build/_deps/picotool/picotoolTargets.cmake
+C:/RP2040/dev/midi_test/build/_deps/picotool/picotoolTargets-release.cmake
+C:/RP2040/dev/midi_test/build/_deps/picotool/picotoolConfig.cmake
+C:/RP2040/dev/midi_test/build/_deps/picotool/picotoolConfigVersion.cmake
