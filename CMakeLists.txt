@@ -35,6 +35,8 @@ target_link_libraries(midi_test PUBLIC
         #tinyusb_common
         tinyusb_device
         tinyusb_board
+        hardware_adc
+        hardware_pwm
 )
 get_target_property(OUT midi_test LINK_LIBRARIES)
 message(STATUS ${OUT})

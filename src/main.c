@@ -1,27 +1,4 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2019 Ha Thach (tinyusb.org)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- */
+
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -29,6 +6,10 @@
 
 #include "pico/stdio.h"
 #include "pico/stdlib.h"
+
+#include "hardware/gpio.h"
+#include "hardware/adc.h"
+#include "hardware/pwm.h"
 
 #include "bsp/board_api.h"
 #include "tusb.h"
@@ -38,54 +19,39 @@
 
 #define BUTTON_PIN 20
 #define LED_PIN 22
+#define ADC_PIN 26
 
-/* This MIDI example send sequence of note (on/off) repeatedly. To test on PC, you need to install
- * synth software and midi connection management software. On
- * - Linux (Ubuntu): install qsynth, qjackctl. Then connect TinyUSB output port to FLUID Synth input port
- * - Windows: install MIDI-OX
- * - MacOS: SimpleSynth
- */
-
-//--------------------------------------------------------------------+
-// MACRO CONSTANT TYPEDEF PROTYPES
-//--------------------------------------------------------------------+
-
-/* Blink pattern
- * - 250 ms  : device not mounted
- * - 1000 ms : device mounted
- * - 2500 ms : device is suspended
- */
-enum  {
-    BLINK_NOT_MOUNTED = 250,
-    BLINK_MOUNTED = 1000,
-    BLINK_SUSPENDED = 2500,
-};
-
-static uint32_t blink_interval_ms = BLINK_NOT_MOUNTED;
 
 void led_setup(void); 
 void led_blinking_task(void);
+void adc_setup(void);
+void adc_task(void);
 void midi_task(void);
 
 /*------------- MAIN -------------*/
 int main(void)
 {
-    //board_init();
     led_setup();
+    adc_setup();
     // init device stack on configured roothub port
     tud_init(BOARD_TUD_RHPORT);
 
-    //if (board_init_after_tusb) {
-    //    board_init_after_tusb();
-    //}
 
     while (1)
     {
         tud_task(); // tinyusb device task
         led_blinking_task();
-        midi_task();
+        adc_task();
     }
 }
+
+long map(long x, long in_min, long in_max, long out_min, long out_max)
+
+    {
+
+      return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+
+    }
 
 //--------------------------------------------------------------------+
 // Device callbacks
@@ -94,13 +60,11 @@ int main(void)
 // Invoked when device is mounted
 void tud_mount_cb(void)
 {
-    blink_interval_ms = BLINK_MOUNTED;
 }
 
 // Invoked when device is unmounted
 void tud_umount_cb(void)
 {
-    blink_interval_ms = BLINK_NOT_MOUNTED;
 }
 
 // Invoked when usb bus is suspended
@@ -109,31 +73,18 @@ void tud_umount_cb(void)
 void tud_suspend_cb(bool remote_wakeup_en)
 {
     (void) remote_wakeup_en;
-    blink_interval_ms = BLINK_SUSPENDED;
 }
 
 // Invoked when usb bus is resumed
 void tud_resume_cb(void)
 {
-    blink_interval_ms = tud_mounted() ? BLINK_MOUNTED : BLINK_NOT_MOUNTED;
 }
 
 //--------------------------------------------------------------------+
 // MIDI Task
 //--------------------------------------------------------------------+
 
-// Variable that holds the current position in the sequence.
-uint32_t note_pos = 0;
-
-// Store example melody as an array of note values
-uint8_t note_sequence[] =
-{
-    74,78,81,86,90,93,98,102,57,61,66,69,73,78,81,85,88,92,97,100,97,92,88,85,81,78,
-    74,69,66,62,57,62,66,69,74,78,81,86,90,93,97,102,97,93,90,85,81,78,73,68,64,61,
-    56,61,64,68,74,78,81,86,90,93,98,102
-};
-
-void midi_task(void)
+/*void midi_task(void)
 {
     return;
     static uint32_t start_ms = 0;
@@ -171,7 +122,7 @@ void midi_task(void)
 
     // If we are at the end of the sequence, start over.
     if (note_pos >= sizeof(note_sequence)) note_pos = 0;
-}
+}*/
 
 //--------------------------------------------------------------------+
 // BLINKING TASK
@@ -190,7 +141,6 @@ bool button_state = 0;
 bool button_state_last = 0;
 void led_blinking_task(void)
 {
-
     button_state_last = button_state;
     button_state = gpio_get(BUTTON_PIN);
 
@@ -207,3 +157,64 @@ void led_blinking_task(void)
     }
 
 }
+
+void adc_setup(void)
+{
+    adc_init();
+    adc_gpio_init( ADC_PIN );
+
+    //gpio_init(11);
+    //gpio_set_dir(11, true );
+    //gpio_put(11, true);
+    //sleep_ms(500);
+    //gpio_put(11, false);
+    //gpio_deinit(11);
+
+    gpio_set_function( 11, GPIO_FUNC_PWM );
+    uint slice_num = pwm_gpio_to_slice_num(11);
+
+    pwm_set_wrap(slice_num, 127);
+
+    pwm_set_enabled( slice_num, true );
+    
+    pwm_set_gpio_level( 11, 127 );
+    //sleep_ms(2000);
+    //pwm_set_gpio_level( 11, 127/2 );
+    //sleep_ms(2000);
+    //pwm_set_gpio_level( 11, 128 );
+    //sleep_ms(2000);
+    //pwm_set_gpio_level( 11, 128 );
+    //sleep_ms(5000);
+
+    
+
+    for ( uint16_t i = 0; i <= 127; i++ )
+    {
+        pwm_set_gpio_level( 11, i );
+        sleep_ms( 10 );
+    }
+}
+
+uint16_t result_0_127 = 0;
+uint16_t result_0_127_pref = 0;
+void adc_task(void)
+{
+    gpio_put( LED_PIN, 1 );
+    
+    gpio_put( LED_PIN, !gpio_get(LED_PIN ) );
+    adc_select_input( 0 );
+    uint16_t adc_result = adc_read();
+    result_0_127_pref = result_0_127;
+    result_0_127 = adc_result >> (12-7);
+
+    pwm_set_gpio_level( 11, result_0_127 );
+    //pwm_set_gpio_level( 11, map(adc_result, 0, 65535, 0, 127 ) );
+    if ( result_0_127_pref != result_0_127 )
+    {
+        uint8_t note_on[3] = { 0x90 | 0, 81, result_0_127 };
+        tud_midi_stream_write( 0, note_on, 3);
+    }
+}
+
+
+
