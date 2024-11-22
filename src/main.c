@@ -204,14 +204,16 @@ void adc_task(void)
     gpio_put( LED_PIN, !gpio_get(LED_PIN ) );
     adc_select_input( 0 );
     uint16_t adc_result = adc_read();
-    result_0_127_pref = result_0_127;
+    
     result_0_127 = adc_result >> (12-7);
 
     pwm_set_gpio_level( 11, result_0_127 );
     //pwm_set_gpio_level( 11, map(adc_result, 0, 65535, 0, 127 ) );
-    if ( result_0_127_pref != result_0_127 )
+    long difference = (long)(result_0_127_pref - result_0_127);
+    if ( difference > 0 || difference < -0 ) 
     {
-        uint8_t note_on[3] = { 0x90 | 0, 81, result_0_127 };
+        result_0_127_pref = result_0_127;
+        uint8_t note_on[3] = { 0b10110000 | 0, 81, result_0_127 };
         tud_midi_stream_write( 0, note_on, 3);
     }
 }
