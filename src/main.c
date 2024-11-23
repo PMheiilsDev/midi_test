@@ -1,4 +1,5 @@
 
+#pragma region includes
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -6,6 +7,7 @@
 
 #include "pico/stdio.h"
 #include "pico/stdlib.h"
+#include "pico/time.h"
 
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
@@ -14,25 +16,38 @@
 #include "bsp/board_api.h"
 #include "tusb.h"
 
+#pragma endregion
 
 //#include "pico/gpio.h"
+
+#pragma region defines
 
 #define BUTTON_PIN 20
 #define LED_PIN 22
 #define ADC_PIN 26
+#define PWM_PIN 11
 
+#define ROT_SW_CLK_PIN 2
+#define ROT_SW_DATA_PIN 3
+
+#pragma endregion
 
 void led_setup(void); 
-void led_blinking_task(void);
 void adc_setup(void);
+void rot_sw_setup(void);
+
+void led_blinking_task(void);
 void adc_task(void);
 void midi_task(void);
+void rot_sw_task(void);
+void rot_sw_task(void);
 
 /*------------- MAIN -------------*/
 int main(void)
 {
     led_setup();
     adc_setup();
+    rot_sw_setup();
     // init device stack on configured roothub port
     tud_init(BOARD_TUD_RHPORT);
 
@@ -42,6 +57,7 @@ int main(void)
         tud_task(); // tinyusb device task
         led_blinking_task();
         adc_task();
+        rot_sw_task();
     }
 }
 
@@ -170,14 +186,14 @@ void adc_setup(void)
     //gpio_put(11, false);
     //gpio_deinit(11);
 
-    gpio_set_function( 11, GPIO_FUNC_PWM );
+    gpio_set_function( PWM_PIN, GPIO_FUNC_PWM );
     uint slice_num = pwm_gpio_to_slice_num(11);
 
     pwm_set_wrap(slice_num, 127);
 
     pwm_set_enabled( slice_num, true );
     
-    pwm_set_gpio_level( 11, 127 );
+    pwm_set_gpio_level( PWM_PIN, 127 );
     //sleep_ms(2000);
     //pwm_set_gpio_level( 11, 127/2 );
     //sleep_ms(2000);
@@ -190,7 +206,7 @@ void adc_setup(void)
 
     for ( uint16_t i = 0; i <= 127; i++ )
     {
-        pwm_set_gpio_level( 11, i );
+        pwm_set_gpio_level( PWM_PIN, i );
         sleep_ms( 10 );
     }
 }
@@ -207,16 +223,71 @@ void adc_task(void)
     
     result_0_127 = adc_result >> (12-7);
 
-    pwm_set_gpio_level( 11, result_0_127 );
-    //pwm_set_gpio_level( 11, map(adc_result, 0, 65535, 0, 127 ) );
+    //pwm_set_gpio_level( PWM_PIN, result_0_127 );
+    //pwm_set_gpio_level( PWM_PIN, map(adc_result, 0, 65535, 0, 127 ) );
     long difference = (long)(result_0_127_pref - result_0_127);
-    if ( difference > 0 || difference < -0 ) 
+    if ( difference > 1 || difference < -1 ) 
     {
         result_0_127_pref = result_0_127;
         uint8_t note_on[3] = { 0b10110000 | 0, 81, result_0_127 };
         tud_midi_stream_write( 0, note_on, 3);
     }
 }
+uint8_t sw_ctr = 0;
+uint32_t time_of_last_clk = 0;
+uint32_t time_of_last_clk_pref = 0;
+void sw_interupt_callback()
+{
+    bool data = gpio_get(ROT_SW_DATA_PIN);
 
+    //time_of_last_clk_pref = time_of_last_clk;
+    //time_of_last_clk = to_ms_since_boot(get_absolute_time());
+    //
+    //if ( time_of_last_clk - time_of_last_clk_pref < 25) return;
 
+    if ( data != 0 )
+    {
+        if ( sw_ctr > 0 )
+        {
+            sw_ctr -=2;
+            //uint8_t note_on[3] = { 0b10110000 | 0, 82, 0x7F & sw_ctr };
+            //tud_midi_stream_write( 0, note_on, 3);
+        }
+    }
+    else
+    {
+        if ( sw_ctr < 126 )
+        {
+            sw_ctr +=2;
+            //uint8_t note_on[3] = { 0b10110000 | 0, 82, 0x7F & sw_ctr };
+            //tud_midi_stream_write( 0, note_on, 3);
+        }
+    }
+    gpio_put(7,!gpio_get(7));
+}
+void rot_sw_setup(void)
+{
+    gpio_init(7);
+    gpio_set_dir(7, GPIO_OUT);
 
+    gpio_init(ROT_SW_DATA_PIN);
+    gpio_set_dir(ROT_SW_DATA_PIN, GPIO_IN );
+    gpio_pull_up(ROT_SW_DATA_PIN);
+
+    gpio_init(ROT_SW_CLK_PIN);
+    gpio_set_dir(ROT_SW_CLK_PIN, GPIO_IN );
+    gpio_pull_up(ROT_SW_CLK_PIN);
+
+    gpio_set_irq_enabled_with_callback(ROT_SW_CLK_PIN, GPIO_IRQ_EDGE_RISE, true, &sw_interupt_callback);
+}
+uint8_t sw_ctr_last_sent = 0;
+void rot_sw_task(void)
+{
+    if ( sw_ctr_last_sent != sw_ctr )
+    {
+        sw_ctr_last_sent = sw_ctr;
+        uint8_t note_on[3] = { 0b10110000 | 0, 82, 0x7F & sw_ctr };
+        tud_midi_stream_write( 0, note_on, 3);
+        pwm_set_gpio_level( PWM_PIN, sw_ctr );
+    }
+}
