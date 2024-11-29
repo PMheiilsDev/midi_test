@@ -4,6 +4,13 @@
     "files.associations": {
         "stdlib.h": "c",
         "tusb.h": "c",
-        "board_api.h": "c"
-    }
+        "board_api.h": "c",
+        "cmath": "c",
+        "*.tcc": "c",
+        "cinttypes": "c",
+        "cstdlib": "c",
+        "adc.h": "c",
+        "time.h": "c"
+    },
+    "cortex-debug.openocdPath": "C:\\VSARM\\sdk\\pico\\openocd\\src\\openocd.exe"
 }
