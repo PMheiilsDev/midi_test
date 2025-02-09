@@ -51,8 +51,9 @@ int main(void)
     // init device stack on configured roothub port
     tud_init(BOARD_TUD_RHPORT);
 
-    while(1)
+    while (1)
     {
+        // debugging 
         static uint debug = 0;
         uint8_t packet[4] = { 0, 0, 0, 0 };
         tud_midi_packet_read(packet);
@@ -63,10 +64,8 @@ int main(void)
                 debug++;
             }
         }
-        tud_task();
-    }
-    while (1)
-    {
+        //debugging end 
+
         tud_task(); // tinyusb device task
         button_task();
         adc_task();
