@@ -65,6 +65,10 @@ target_include_directories(midi_test PUBLIC
 #)
 
 
+pico_enable_stdio_uart(midi_test 1)
+pico_enable_stdio_usb(midi_test 0)
+
+
 message("${CFG_TUSB_MCU}")
 
 pico_add_extra_outputs(midi_test)

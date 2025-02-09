@@ -45,25 +45,27 @@ void rot_sw_task(void);
 /*------------- MAIN -------------*/
 int main(void)
 {
-    led_setup();
-    adc_setup();
-    rot_sw_setup();
-    // init device stack on configured roothub port
-    tud_init(BOARD_TUD_RHPORT);
+    // led_setup();
+    // adc_setup();
+    // rot_sw_setup();
+    // // init device stack on configured roothub port
+    // tud_init(BOARD_TUD_RHPORT);
 
+    stdio_init_all();
+    while(1)
+    {
+        printf("test\n");
+        sleep_ms(500);
+    }
     while (1)
     {
         // debugging 
         static uint debug = 0;
         uint8_t packet[4] = { 0, 0, 0, 0 };
-        tud_midi_packet_read(packet);
-        for( int i = 0; i < 4; i++ )
+        if ( tud_midi_packet_read(packet) )
         {
-            if ( packet[i] != 0 )
-            {
-                debug++;
-            }
-        }
+            printf("hex: %02x %02x %02x %02x\n", packet[0], packet[1], packet[2], packet[3] );
+        } 
         //debugging end 
 
         tud_task(); // tinyusb device task
