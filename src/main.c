@@ -113,15 +113,15 @@ void button_task(void)
 
     uint8_t packet[4] = { 0, 0, 0, 0 };
     
-    tud_midi_packet_read(packet);
-    for( int i = 0; i < 4; i++ )
-    {
-        if ( packet[i] != 0 )
-        {
-            static uint debug = 0;
-            debug++;
-        }
-    }
+    //tud_midi_packet_read(packet);
+    //for( int i = 0; i < 4; i++ )
+    //{
+    //    if ( packet[i] != 0 )
+    //    {
+    //        static uint debug = 0;
+    //        debug++;
+    //    }
+    //}
 
     if ( button_state && !button_state_last )
     {
@@ -189,7 +189,7 @@ void sw_interupt_callback()
     {
         if ( sw_ctr > 0 )
         {
-            sw_ctr -=2;
+            sw_ctr -=1;
             //uint8_t note_on[3] = { 0b10110000 | 0, 82, 0x7F & sw_ctr };
             //tud_midi_stream_write( 0, note_on, 3);
         }
@@ -198,7 +198,7 @@ void sw_interupt_callback()
     {
         if ( sw_ctr < 126 )
         {
-            sw_ctr +=2;
+            sw_ctr +=1;
             //uint8_t note_on[3] = { 0b10110000 | 0, 82, 0x7F & sw_ctr };
             //tud_midi_stream_write( 0, note_on, 3);
         }
