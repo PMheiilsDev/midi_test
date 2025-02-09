@@ -1,0 +1,23 @@
+create a button 
+
+IN/OUT
+
+init gpio
+
+
+
+Button List 
+
+IN/OUT 
+UP/DOWN Pull 
+Schalter/Taster 
+midi number
+send via midi on/off 
+
+
+Button Debug mode 
+
+where it can be testet which button is which by pressing it 
+
+and getting feedback like via (serial) or led glowing 
+
