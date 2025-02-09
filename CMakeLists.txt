@@ -45,11 +45,13 @@ message(STATUS ${OUT})
 target_sources(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_descriptors.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/Button/button.c
         )
 
 # Example include
 target_include_directories(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/Button
         )
 
 ## add tinyusb files
