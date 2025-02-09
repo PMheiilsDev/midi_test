@@ -42,29 +42,48 @@ void midi_task(void);
 void rot_sw_task(void);
 void rot_sw_task(void);
 
+uint ctr = 0; 
+
+
 /*------------- MAIN -------------*/
 int main(void)
 {
-    // led_setup();
-    // adc_setup();
-    // rot_sw_setup();
-    // // init device stack on configured roothub port
-    // tud_init(BOARD_TUD_RHPORT);
+    led_setup();
+    adc_setup();
+    rot_sw_setup();
+    // init device stack on configured roothub port
+    tud_init(BOARD_TUD_RHPORT);
 
-    stdio_init_all();
-    while(1)
+    char data [640*4];
+    char temp[12];
+    sprintf(temp,"%x",data);
+    for( int i = 0; i < 640*4; i++ )
     {
-        printf("test\n");
-        sleep_ms(500);
+        data[i] = 0; 
     }
     while (1)
     {
         // debugging 
-        static uint debug = 0;
-        uint8_t packet[4] = { 0, 0, 0, 0 };
-        if ( tud_midi_packet_read(packet) )
+        static uint debug = 0; 
+        uint8_t packet[4] = { 0, 0, 0, 0 }; 
+        if ( tud_midi_packet_read(packet) ) 
         {
-            printf("hex: %02x %02x %02x %02x\n", packet[0], packet[1], packet[2], packet[3] );
+            char voicemeeter_init_str[4] = {0xb0,0x7f,0x7f,0x00};
+
+            if ( ! memcmp( packet + ctr*4, voicemeeter_init_str,4) )
+            {
+                uint8_t note_on[4] = {0xb0,0x7f,0x7f,0x00};
+                tud_midi_stream_write( 0, note_on, 4);
+                //char cc_ack_str[4] = {0xb0,0x7f,0x7f,0x00}; 
+                //tud_midi_packet_write(cc_ack_str); 
+            }
+
+            else
+            {
+                memcpy( data+ctr*4, packet, 4 ); 
+                //printf("hex: %02x %02x %02x %02x\n", packet[0], packet[1], packet[2], packet[3] );
+            }
+            ctr++; 
         } 
         //debugging end 
 
