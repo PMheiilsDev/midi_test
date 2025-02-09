@@ -168,7 +168,16 @@ void adc_task(void)
     adc_select_input( 1 );
     /*uint16_t*/ adc_result = adc_read();
     
-    result_0_127 = adc_result >> (12-7);
+    // change this "mapping" so that all 
+    if( adc_result <= 200 )
+    {
+        result_0_127 = 0;
+    }
+    else
+    {
+        //result_0_127 = adc_result >> (12-7);
+        result_0_127 = (((adc_result-200)*(127-80))/(4096-200))+80;
+    }
 
     //pwm_set_gpio_level( PWM_PIN, result_0_127 );
     //pwm_set_gpio_level( PWM_PIN, map(adc_result, 0, 65535, 0, 127 ) );
