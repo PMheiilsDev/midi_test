@@ -1,6 +1,7 @@
 clean up main.c and move to sub files in sub folders 
 
 divide in:
+ - USB
  - Inputs  
   - Rotary SW 
   - Potentiometer 
