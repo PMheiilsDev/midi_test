@@ -61,10 +61,10 @@ int main(void)
     }
 }
 
-
 //--------------------------------------------------------------------+
 // Device callbacks
 //--------------------------------------------------------------------+
+#pragma region tud_functions
 
 // Invoked when device is mounted
 void tud_mount_cb(void)
@@ -88,6 +88,8 @@ void tud_suspend_cb(bool remote_wakeup_en)
 void tud_resume_cb(void)
 {
 }
+
+#pragma endregion
 
 //--------------------------------------------------------------------+
 // MIDI Task
