@@ -23,6 +23,10 @@
                 "continue"
             ],
             "searchDir": ["C:\\VSARM\\sdk\\pico\\openocd\\tcl"],
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 4
+            },
         }
     ]
 }
