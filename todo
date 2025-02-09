@@ -1,0 +1,10 @@
+clean up main.c and move to sub files in sub folders 
+
+divide in:
+ - Inputs  
+  - Rotary SW 
+  - Potentiometer 
+  - Buttons 
+ - Outputs 
+  - LEDs 
+  - WS2812 
