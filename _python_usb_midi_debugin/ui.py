@@ -183,6 +183,8 @@ class GridWindow(QWidget):
             # No device selected after refresh
             self.device_combo_input.setCurrentIndex(-1)
 
+        # Manually trigger the update in case of reselecting the same item
+        self.update_midi_input_device()
 
     def refresh_output_devices(self):
         # Temporarily disconnect the signal to prevent triggering
@@ -217,6 +219,9 @@ class GridWindow(QWidget):
         else:
             # No device selected after refresh
             self.device_combo_output.setCurrentIndex(-1)
+
+        # Manually trigger the update in case of reselecting the same item
+        self.update_midi_output_device()
 
 
     def update_midi_input_device(self):
