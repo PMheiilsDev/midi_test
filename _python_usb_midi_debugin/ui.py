@@ -20,7 +20,7 @@ class MidiListenerThread(QThread):
             with mido.open_input(self.input_device_name) as inport:
                 while self.running:
                     for msg in inport.iter_pending():
-                        message = f"[ -> ]: {msg}"
+                        message = f"<b>[ → ]:</b> {msg}"
                         self.midi_message_received.emit(message)
         except Exception as e:
             self.midi_message_received.emit(f"Error: {e}")
@@ -296,7 +296,7 @@ class GridWindow(QWidget):
             velocity = 127 if status else 0
             msg = mido.Message('note_on', note=button_num, velocity=velocity)
             self.outport.send(msg)
-            self.log_midi_message(f"[ <- ]: {msg}")
+            self.log_midi_message(f"<b>[ ← ]:</b> {msg}")
         else:
             self.log_midi_message("No MIDI output device selected!")
 
@@ -316,7 +316,7 @@ class GridWindow(QWidget):
             note = 100 if slider_idx == 1 else 101
             msg = mido.Message('note_on', note=note, velocity=velocity)
             self.outport.send(msg)
-            self.log_midi_message(f"[ <- ]: {msg}")
+            self.log_midi_message(f"<b>[ ← ]:</b> {msg}")
         else:
             self.log_midi_message("No MIDI output device selected!")
 
