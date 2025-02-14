@@ -34,6 +34,7 @@ class GridWindow(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.last_input_device = None  # Track last selected input device
         self.checkable_buttons = [True, False, False, False,
                                   False, True, False, False,
                                   False, False, True, False,
@@ -46,7 +47,7 @@ class GridWindow(QWidget):
 
     def init_ui(self):
         self.setWindowTitle("4x4 Grid of Buttons with Sliders")
-        self.resize(800, 600)  # **Increase startup window size**
+        self.resize(800, 600)  # Increase startup window size
 
         main_layout = QVBoxLayout()
 
@@ -59,7 +60,7 @@ class GridWindow(QWidget):
 
         refresh_button_output = QPushButton("Refresh")
         refresh_button_output.clicked.connect(self.refresh_output_devices)
-        refresh_button_output.setFixedSize(100, 30)  # **Set fixed size for the refresh button**
+        refresh_button_output.setFixedSize(100, 30)  # Set fixed size for the refresh button
         output_device_layout.addWidget(refresh_button_output)
 
         main_layout.addLayout(output_device_layout)
@@ -126,12 +127,12 @@ class GridWindow(QWidget):
         input_device_layout = QHBoxLayout()
         self.device_combo_input = QComboBox()
         self.device_combo_input.addItems(mido.get_input_names())
-        self.device_combo_input.currentIndexChanged.connect(self.update_midi_input_device)
+        self.device_combo_input.currentTextChanged.connect(self.update_midi_input_device)  # Changed to currentTextChanged
         input_device_layout.addWidget(self.device_combo_input)
 
         refresh_button_input = QPushButton("Refresh")
         refresh_button_input.clicked.connect(self.refresh_input_devices)
-        refresh_button_input.setFixedSize(100, 30)  # **Set fixed size for the refresh button**
+        refresh_button_input.setFixedSize(100, 30)  # Set fixed size for the refresh button
         input_device_layout.addWidget(refresh_button_input)
 
         main_layout.addLayout(input_device_layout)
@@ -139,7 +140,7 @@ class GridWindow(QWidget):
         # Log Display
         self.log_display = QTextEdit()
         self.log_display.setReadOnly(True)
-        self.log_display.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)  # **Ensure messages stay in one line**
+        self.log_display.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)  # Ensure messages stay in one line
         main_layout.addWidget(self.log_display)
 
         self.setLayout(main_layout)
@@ -151,7 +152,7 @@ class GridWindow(QWidget):
 
     def refresh_input_devices(self):
         # Temporarily disconnect the signal to prevent triggering
-        self.device_combo_input.currentIndexChanged.disconnect()
+        self.device_combo_input.currentTextChanged.disconnect()
 
         # Save the currently selected input device (if any)
         current_device = self.device_combo_input.currentText()
@@ -170,10 +171,15 @@ class GridWindow(QWidget):
         
         # Combine the lists with TinyUSB devices first
         sorted_devices = tinyusb_devices + other_devices
+
+        # If there is only one device, duplicate it
+        if len(sorted_devices) == 1:
+            sorted_devices.append(sorted_devices[0])
+
         self.device_combo_input.addItems(sorted_devices)
 
         # Reconnect the signal after refresh
-        self.device_combo_input.currentIndexChanged.connect(self.update_midi_input_device)
+        self.device_combo_input.currentTextChanged.connect(self.update_midi_input_device)
 
         # If the same device still exists, reselect it
         if current_device in sorted_devices:
@@ -183,8 +189,6 @@ class GridWindow(QWidget):
             # No device selected after refresh
             self.device_combo_input.setCurrentIndex(-1)
 
-        # Manually trigger the update in case of reselecting the same item
-        self.update_midi_input_device()
 
     def refresh_output_devices(self):
         # Temporarily disconnect the signal to prevent triggering
@@ -207,6 +211,11 @@ class GridWindow(QWidget):
         
         # Combine the lists with TinyUSB devices first
         sorted_devices = tinyusb_devices + other_devices
+
+        # If there is only one device, duplicate it
+        if len(sorted_devices) == 1:
+            sorted_devices.append(sorted_devices[0])
+
         self.device_combo_output.addItems(sorted_devices)
 
         # Reconnect the signal after refresh
@@ -220,13 +229,23 @@ class GridWindow(QWidget):
             # No device selected after refresh
             self.device_combo_output.setCurrentIndex(-1)
 
-        # Manually trigger the update in case of reselecting the same item
-        self.update_midi_output_device()
-
-
     def update_midi_input_device(self):
         device_name = self.device_combo_input.currentText()
-        if device_name:
+
+        if device_name != self.last_input_device:  # Only proceed if the device has changed
+            self.last_input_device = device_name  # Update the last input device variable
+            if device_name:
+                if self.listener_thread:
+                    self.listener_thread.stop()
+                    self.listener_thread.wait()
+
+                self.listener_thread = MidiListenerThread(device_name)
+                self.listener_thread.midi_message_received.connect(self.log_midi_message)
+                self.listener_thread.start()
+            else:
+                self.log_midi_message("No MIDI input device selected.")
+        else:
+            # Device didn't change, force the update (this handles reselection of the same device)
             if self.listener_thread:
                 self.listener_thread.stop()
                 self.listener_thread.wait()
@@ -234,9 +253,6 @@ class GridWindow(QWidget):
             self.listener_thread = MidiListenerThread(device_name)
             self.listener_thread.midi_message_received.connect(self.log_midi_message)
             self.listener_thread.start()
-            self.log_midi_message(f"MIDI input device selected: {device_name}")
-        else:
-            self.log_midi_message("No MIDI input device selected.")
 
     def log_midi_message(self, message):
         self.log_display.append(message)
