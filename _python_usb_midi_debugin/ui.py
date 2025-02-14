@@ -59,6 +59,7 @@ class GridWindow(QWidget):
 
         refresh_button_output = QPushButton("Refresh")
         refresh_button_output.clicked.connect(self.refresh_output_devices)
+        refresh_button_output.setFixedSize(100, 30)  # **Set fixed size for the refresh button**
         output_device_layout.addWidget(refresh_button_output)
 
         main_layout.addLayout(output_device_layout)
@@ -130,6 +131,7 @@ class GridWindow(QWidget):
 
         refresh_button_input = QPushButton("Refresh")
         refresh_button_input.clicked.connect(self.refresh_input_devices)
+        refresh_button_input.setFixedSize(100, 30)  # **Set fixed size for the refresh button**
         input_device_layout.addWidget(refresh_button_input)
 
         main_layout.addLayout(input_device_layout)
