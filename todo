@@ -22,3 +22,6 @@ Basically:
 System.SendMidi( "out1", "data", 90, 1, 7f/0 ); 
  - here the out1 might represent which device it is sent to
 
+
+
+Add a function that can decode midi measages 
