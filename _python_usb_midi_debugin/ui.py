@@ -149,6 +149,12 @@ class GridWindow(QWidget):
         self.log_display.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)  # Ensure messages stay in one line
         main_layout.addWidget(self.log_display)
         #endregion
+        
+        #region Clear Button 
+        self.clear_Button = QPushButton("Clear")
+        self.clear_Button.clicked.connect(self.log_display_clear)
+        main_layout.addWidget(self.clear_Button, alignment=Qt.AlignmentFlag.AlignRight)
+        #endregion
 
         self.setLayout(main_layout)
         self.refresh_input_devices()
@@ -272,6 +278,9 @@ class GridWindow(QWidget):
                 self.log_midi_message(f"Error opening MIDI output device: {e}")
         else:
             self.log_midi_message("No MIDI output device selected.")
+
+    def log_display_clear(self): 
+        self.log_display.clear() 
 
     #endregion
 
