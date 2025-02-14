@@ -148,22 +148,74 @@ class GridWindow(QWidget):
     #region MIDI Functions
 
     def refresh_input_devices(self):
+        # Temporarily disconnect the signal to prevent triggering
+        self.device_combo_input.currentIndexChanged.disconnect()
+
+        # Save the currently selected input device (if any)
+        current_device = self.device_combo_input.currentText()
+
+        # Clear and refresh the device list
         self.device_combo_input.clear()
         devices = mido.get_input_names()
-        self.device_combo_input.addItems(devices)
+        
+        # Prioritize TinyUSB devices
+        tinyusb_devices = [device for device in devices if "TinyUSB" in device]
+        other_devices = [device for device in devices if "TinyUSB" not in device]
+        
+        # Sort both lists
+        tinyusb_devices.sort()
+        other_devices.sort()
+        
+        # Combine the lists with TinyUSB devices first
+        sorted_devices = tinyusb_devices + other_devices
+        self.device_combo_input.addItems(sorted_devices)
 
-        if devices:
-            self.device_combo_input.setCurrentIndex(0)
-            self.update_midi_input_device()
+        # Reconnect the signal after refresh
+        self.device_combo_input.currentIndexChanged.connect(self.update_midi_input_device)
+
+        # If the same device still exists, reselect it
+        if current_device in sorted_devices:
+            index = sorted_devices.index(current_device)
+            self.device_combo_input.setCurrentIndex(index)
+        else:
+            # No device selected after refresh
+            self.device_combo_input.setCurrentIndex(-1)
+
 
     def refresh_output_devices(self):
+        # Temporarily disconnect the signal to prevent triggering
+        self.device_combo_output.currentIndexChanged.disconnect()
+
+        # Save the currently selected output device (if any)
+        current_device = self.device_combo_output.currentText()
+
+        # Clear and refresh the device list
         self.device_combo_output.clear()
         devices = mido.get_output_names()
-        self.device_combo_output.addItems(devices)
+        
+        # Prioritize TinyUSB devices
+        tinyusb_devices = [device for device in devices if "TinyUSB" in device]
+        other_devices = [device for device in devices if "TinyUSB" not in device]
+        
+        # Sort both lists
+        tinyusb_devices.sort()
+        other_devices.sort()
+        
+        # Combine the lists with TinyUSB devices first
+        sorted_devices = tinyusb_devices + other_devices
+        self.device_combo_output.addItems(sorted_devices)
 
-        if devices:
-            self.device_combo_output.setCurrentIndex(0)
-            self.update_midi_output_device()
+        # Reconnect the signal after refresh
+        self.device_combo_output.currentIndexChanged.connect(self.update_midi_output_device)
+
+        # If the same device still exists, reselect it
+        if current_device in sorted_devices:
+            index = sorted_devices.index(current_device)
+            self.device_combo_output.setCurrentIndex(index)
+        else:
+            # No device selected after refresh
+            self.device_combo_output.setCurrentIndex(-1)
+
 
     def update_midi_input_device(self):
         device_name = self.device_combo_input.currentText()
