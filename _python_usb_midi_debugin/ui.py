@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 
-
+#region MIDI Listener Thread
 class MidiListenerThread(QThread):
     midi_message_received = pyqtSignal(str)
 
@@ -20,7 +20,7 @@ class MidiListenerThread(QThread):
             with mido.open_input(self.input_device_name) as inport:
                 while self.running:
                     for msg in inport.iter_pending():
-                        message = f"Received MIDI: {msg}"
+                        message = f"<b>[ → ]:</b> {msg}"
                         self.midi_message_received.emit(message)
         except Exception as e:
             self.midi_message_received.emit(f"Error: {e}")
@@ -28,12 +28,14 @@ class MidiListenerThread(QThread):
     def stop(self):
         self.running = False
         self.quit()
+#endregion
 
-
+#region Main GUI Class
 class GridWindow(QWidget):
     def __init__(self):
         super().__init__()
 
+        self.last_input_device = None  # Track last selected input device
         self.checkable_buttons = [True, False, False, False,
                                   False, True, False, False,
                                   False, False, True, False,
@@ -44,26 +46,34 @@ class GridWindow(QWidget):
 
         self.init_ui()
 
+    #region UI Setup
     def init_ui(self):
         self.setWindowTitle("4x4 Grid of Buttons with Sliders")
-        self.resize(800, 600)  # **Increase startup window size**
+        self.resize(800, 600)  # Increase startup window size
 
         main_layout = QVBoxLayout()
 
-        # MIDI Output Device Selection
+        #region MIDI Output Selection
         output_device_layout = QHBoxLayout()
         self.device_combo_output = QComboBox()
         self.device_combo_output.addItems(mido.get_output_names())
-        self.device_combo_output.currentIndexChanged.connect(self.update_midi_output_device)
+        self.device_combo_output.activated.connect(self.update_midi_output_device)
         output_device_layout.addWidget(self.device_combo_output)
+
+        disconnect_button_output = QPushButton("Disconnect")
+        disconnect_button_output.clicked.connect(self.disconnect_output)
+        disconnect_button_output.setFixedSize(100, 30)
+        output_device_layout.addWidget(disconnect_button_output)
 
         refresh_button_output = QPushButton("Refresh")
         refresh_button_output.clicked.connect(self.refresh_output_devices)
+        refresh_button_output.setFixedSize(100, 30)  # Set fixed size for the refresh button
         output_device_layout.addWidget(refresh_button_output)
 
         main_layout.addLayout(output_device_layout)
+        #endregion
 
-        # 4x4 Grid of Buttons
+        #region 4x4 Grid of Buttons
         grid = QGridLayout()
         self.buttons = []
         num = 1
@@ -80,6 +90,7 @@ class GridWindow(QWidget):
         grid.setVerticalSpacing(10)
         grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
         main_layout.addLayout(grid)
+        #endregion
 
         # Divider
         divider = QFrame()
@@ -87,7 +98,7 @@ class GridWindow(QWidget):
         divider.setFrameShadow(QFrame.Shadow.Sunken)
         main_layout.addWidget(divider)
 
-        # Sliders and Reset Buttons
+        #region Sliders and Controls
         for idx in range(1, 3):
             slider_layout = QHBoxLayout()
 
@@ -114,6 +125,7 @@ class GridWindow(QWidget):
             setattr(self, f"slider{idx}_value_label", slider_value_label)
 
             main_layout.addLayout(slider_layout)
+        #endregion
 
         # Divider
         bottom_divider = QFrame()
@@ -121,35 +133,51 @@ class GridWindow(QWidget):
         bottom_divider.setFrameShadow(QFrame.Shadow.Sunken)
         main_layout.addWidget(bottom_divider)
 
-        # MIDI Input Device Selection
+        #region MIDI Input Selection
         input_device_layout = QHBoxLayout()
         self.device_combo_input = QComboBox()
         self.device_combo_input.addItems(mido.get_input_names())
-        self.device_combo_input.currentIndexChanged.connect(self.update_midi_input_device)
+        self.device_combo_input.activated.connect(self.update_midi_input_device)  # Changed to activated 
         input_device_layout.addWidget(self.device_combo_input)
+
+        disconnect_button_input = QPushButton("Disconnect")
+        disconnect_button_input.clicked.connect(self.disconnect_input)
+        disconnect_button_input.setFixedSize(100, 30)
+        input_device_layout.addWidget(disconnect_button_input)
+
 
         refresh_button_input = QPushButton("Refresh")
         refresh_button_input.clicked.connect(self.refresh_input_devices)
+        refresh_button_input.setFixedSize(100, 30)  # Set fixed size for the refresh button
         input_device_layout.addWidget(refresh_button_input)
 
         main_layout.addLayout(input_device_layout)
+        #endregion
 
-        # Log Display
+        #region Log Display
         self.log_display = QTextEdit()
         self.log_display.setReadOnly(True)
-        self.log_display.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)  # **Ensure messages stay in one line**
+        self.log_display.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)  # Ensure messages stay in one line
         main_layout.addWidget(self.log_display)
+        #endregion
+        
+        #region Clear Button 
+        self.clear_Button = QPushButton("Clear")
+        self.clear_Button.clicked.connect(self.log_display_clear)
+        main_layout.addWidget(self.clear_Button, alignment=Qt.AlignmentFlag.AlignRight)
+        #endregion
 
         self.setLayout(main_layout)
         self.refresh_input_devices()
         self.refresh_output_devices()
         self.show()
+    #endregion
 
     #region MIDI Functions
 
     def refresh_input_devices(self):
         # Temporarily disconnect the signal to prevent triggering
-        self.device_combo_input.currentIndexChanged.disconnect()
+        self.device_combo_input.activated.disconnect()
 
         # Save the currently selected input device (if any)
         current_device = self.device_combo_input.currentText()
@@ -168,10 +196,11 @@ class GridWindow(QWidget):
 
         # Combine the lists with TinyUSB devices first
         sorted_devices = tinyusb_devices + other_devices
+
         self.device_combo_input.addItems(sorted_devices)
 
         # Reconnect the signal after refresh
-        self.device_combo_input.currentIndexChanged.connect(self.update_midi_input_device)
+        self.device_combo_input.activated.connect(self.update_midi_input_device)
 
         # If only one device, set it as the current selection
         if len(sorted_devices) == 1:
@@ -186,7 +215,7 @@ class GridWindow(QWidget):
 
     def refresh_output_devices(self):
         # Temporarily disconnect the signal to prevent triggering
-        self.device_combo_output.currentIndexChanged.disconnect()
+        self.device_combo_output.activated.disconnect()
 
         # Save the currently selected output device (if any)
         current_device = self.device_combo_output.currentText()
@@ -205,10 +234,11 @@ class GridWindow(QWidget):
 
         # Combine the lists with TinyUSB devices first
         sorted_devices = tinyusb_devices + other_devices
+
         self.device_combo_output.addItems(sorted_devices)
 
         # Reconnect the signal after refresh
-        self.device_combo_output.currentIndexChanged.connect(self.update_midi_output_device)
+        self.device_combo_output.activated.connect(self.update_midi_output_device)
 
         # If only one device, set it as the current selection
         if len(sorted_devices) == 1:
@@ -221,9 +251,13 @@ class GridWindow(QWidget):
             # No device selected after refresh
             self.device_combo_output.setCurrentIndex(-1)
 
-
     def update_midi_input_device(self):
+        if self.listener_thread != None:
+            self.listener_thread.disconnect()
+            self.listener_thread.stop()
+        
         device_name = self.device_combo_input.currentText()
+
         if device_name:
             if self.listener_thread:
                 self.listener_thread.stop()
@@ -232,13 +266,25 @@ class GridWindow(QWidget):
             self.listener_thread = MidiListenerThread(device_name)
             self.listener_thread.midi_message_received.connect(self.log_midi_message)
             self.listener_thread.start()
+            self.log_midi_message(f"MIDI input device selected: {device_name}")
+        
         else:
-            self.log_midi_message("No MIDI input device selected.")
+            # Device didn't change, force the update (this handles reselection of the same device)
+            if self.listener_thread:
+                self.listener_thread.stop()
+                self.listener_thread.wait()
+
+            self.listener_thread = MidiListenerThread(device_name)
+            self.listener_thread.midi_message_received.connect(self.log_midi_message)
+            self.listener_thread.start()
 
     def log_midi_message(self, message):
         self.log_display.append(message)
 
     def update_midi_output_device(self):
+        if self.outport:
+            self.outport.close()
+        
         device_name = self.device_combo_output.currentText()
         if device_name:
             try:
@@ -248,6 +294,27 @@ class GridWindow(QWidget):
                 self.log_midi_message(f"Error opening MIDI output device: {e}")
         else:
             self.log_midi_message("No MIDI output device selected.")
+
+    def disconnect_output(self):
+        if self.outport:
+            self.outport.close()
+            self.outport = None
+            
+        self.log_midi_message("MIDI output device disconnected")
+    
+    
+    def disconnect_input(self):
+        
+        if self.listener_thread:
+            self.listener_thread.disconnect()
+            self.listener_thread.stop()
+            self.listener_thread = None
+            
+        self.log_midi_message("MIDI input device disconnected")
+            
+
+    def log_display_clear(self): 
+        self.log_display.clear() 
 
     #endregion
 
@@ -263,7 +330,7 @@ class GridWindow(QWidget):
             velocity = 127 if status else 0
             msg = mido.Message('note_on', note=button_num, velocity=velocity)
             self.outport.send(msg)
-            self.log_midi_message(f"Button {button_num} clicked, Status: {status}, MIDI sent: {msg}")
+            self.log_midi_message(f"<b>[ ← ]:</b> {msg}")
         else:
             self.log_midi_message("No MIDI output device selected!")
 
@@ -283,7 +350,7 @@ class GridWindow(QWidget):
             note = 100 if slider_idx == 1 else 101
             msg = mido.Message('note_on', note=note, velocity=velocity)
             self.outport.send(msg)
-            self.log_midi_message(f"Slider {slider_idx} sent MIDI message: {msg}")
+            self.log_midi_message(f"<b>[ ← ]:</b> {msg}")
         else:
             self.log_midi_message("No MIDI output device selected!")
 
