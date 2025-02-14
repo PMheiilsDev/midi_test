@@ -234,6 +234,7 @@ class GridWindow(QWidget):
             self.listener_thread = MidiListenerThread(device_name)
             self.listener_thread.midi_message_received.connect(self.log_midi_message)
             self.listener_thread.start()
+            self.log_midi_message(f"MIDI input device selected: {device_name}")
         else:
             self.log_midi_message("No MIDI input device selected.")
 
