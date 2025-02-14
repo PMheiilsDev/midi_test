@@ -60,6 +60,11 @@ class GridWindow(QWidget):
         self.device_combo_output.activated.connect(self.update_midi_output_device)
         output_device_layout.addWidget(self.device_combo_output)
 
+        disconnect_button_output = QPushButton("Disconnect")
+        disconnect_button_output.clicked.connect(self.disconnect_output)
+        disconnect_button_output.setFixedSize(100, 30)
+        output_device_layout.addWidget(disconnect_button_output)
+
         refresh_button_output = QPushButton("Refresh")
         refresh_button_output.clicked.connect(self.refresh_output_devices)
         refresh_button_output.setFixedSize(100, 30)  # Set fixed size for the refresh button
@@ -134,6 +139,12 @@ class GridWindow(QWidget):
         self.device_combo_input.addItems(mido.get_input_names())
         self.device_combo_input.activated.connect(self.update_midi_input_device)  # Changed to activated 
         input_device_layout.addWidget(self.device_combo_input)
+
+        disconnect_button_input = QPushButton("Disconnect")
+        #disconnect_button_input.clicked.connect(self.disconnect_intput)
+        disconnect_button_input.setFixedSize(100, 30)
+        input_device_layout.addWidget(disconnect_button_input)
+
 
         refresh_button_input = QPushButton("Refresh")
         refresh_button_input.clicked.connect(self.refresh_input_devices)
@@ -278,6 +289,13 @@ class GridWindow(QWidget):
                 self.log_midi_message(f"Error opening MIDI output device: {e}")
         else:
             self.log_midi_message("No MIDI output device selected.")
+
+    def disconnect_output(self):
+        if self.outport:
+            self.outport.close()
+            self.outport = None
+            
+        self.log_midi_message("MIDI output device disconnected")
 
     def log_display_clear(self): 
         self.log_display.clear() 
