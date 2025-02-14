@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 
-
+#region MIDI Listener Thread
 class MidiListenerThread(QThread):
     midi_message_received = pyqtSignal(str)
 
@@ -28,8 +28,9 @@ class MidiListenerThread(QThread):
     def stop(self):
         self.running = False
         self.quit()
+#endregion
 
-
+#region Main GUI Class
 class GridWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -45,13 +46,14 @@ class GridWindow(QWidget):
 
         self.init_ui()
 
+    #region UI Setup
     def init_ui(self):
         self.setWindowTitle("4x4 Grid of Buttons with Sliders")
         self.resize(800, 600)  # Increase startup window size
 
         main_layout = QVBoxLayout()
 
-        # MIDI Output Device Selection
+        #region MIDI Output Selection
         output_device_layout = QHBoxLayout()
         self.device_combo_output = QComboBox()
         self.device_combo_output.addItems(mido.get_output_names())
@@ -64,8 +66,9 @@ class GridWindow(QWidget):
         output_device_layout.addWidget(refresh_button_output)
 
         main_layout.addLayout(output_device_layout)
+        #endregion
 
-        # 4x4 Grid of Buttons
+        #region 4x4 Grid of Buttons
         grid = QGridLayout()
         self.buttons = []
         num = 1
@@ -82,6 +85,7 @@ class GridWindow(QWidget):
         grid.setVerticalSpacing(10)
         grid.setAlignment(Qt.AlignmentFlag.AlignLeft)
         main_layout.addLayout(grid)
+        #endregion
 
         # Divider
         divider = QFrame()
@@ -89,7 +93,7 @@ class GridWindow(QWidget):
         divider.setFrameShadow(QFrame.Shadow.Sunken)
         main_layout.addWidget(divider)
 
-        # Sliders and Reset Buttons
+        #region Sliders and Controls
         for idx in range(1, 3):
             slider_layout = QHBoxLayout()
 
@@ -116,6 +120,7 @@ class GridWindow(QWidget):
             setattr(self, f"slider{idx}_value_label", slider_value_label)
 
             main_layout.addLayout(slider_layout)
+        #endregion
 
         # Divider
         bottom_divider = QFrame()
@@ -123,7 +128,7 @@ class GridWindow(QWidget):
         bottom_divider.setFrameShadow(QFrame.Shadow.Sunken)
         main_layout.addWidget(bottom_divider)
 
-        # MIDI Input Device Selection
+        #region MIDI Input Selection
         input_device_layout = QHBoxLayout()
         self.device_combo_input = QComboBox()
         self.device_combo_input.addItems(mido.get_input_names())
@@ -136,17 +141,20 @@ class GridWindow(QWidget):
         input_device_layout.addWidget(refresh_button_input)
 
         main_layout.addLayout(input_device_layout)
+        #endregion
 
-        # Log Display
+        #region Log Display
         self.log_display = QTextEdit()
         self.log_display.setReadOnly(True)
         self.log_display.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)  # Ensure messages stay in one line
         main_layout.addWidget(self.log_display)
+        #endregion
 
         self.setLayout(main_layout)
         self.refresh_input_devices()
         self.refresh_output_devices()
         self.show()
+    #endregion
 
     #region MIDI Functions
 
@@ -252,7 +260,7 @@ class GridWindow(QWidget):
         self.log_display.append(message)
 
     def update_midi_output_device(self):
-        if self.outport != None:
+        if self.outport:
             self.outport.close()
         
         device_name = self.device_combo_output.currentText()
