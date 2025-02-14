@@ -141,7 +141,7 @@ class GridWindow(QWidget):
         input_device_layout.addWidget(self.device_combo_input)
 
         disconnect_button_input = QPushButton("Disconnect")
-        #disconnect_button_input.clicked.connect(self.disconnect_intput)
+        disconnect_button_input.clicked.connect(self.disconnect_input)
         disconnect_button_input.setFixedSize(100, 30)
         input_device_layout.addWidget(disconnect_button_input)
 
@@ -296,6 +296,17 @@ class GridWindow(QWidget):
             self.outport = None
             
         self.log_midi_message("MIDI output device disconnected")
+    
+    
+    def disconnect_input(self):
+        
+        if self.listener_thread:
+            self.listener_thread.disconnect()
+            self.listener_thread.stop()
+            self.listener_thread = None
+            
+        self.log_midi_message("MIDI input device disconnected")
+            
 
     def log_display_clear(self): 
         self.log_display.clear() 
