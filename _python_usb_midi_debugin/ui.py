@@ -6,7 +6,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 
-
+#region MIDI Listener Thread
 class MidiListenerThread(QThread):
     midi_message_received = pyqtSignal(str)
 
@@ -28,6 +28,7 @@ class MidiListenerThread(QThread):
     def stop(self):
         self.running = False
         self.quit()
+#endregion
 
 
 class GridWindow(QWidget):
