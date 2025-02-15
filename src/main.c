@@ -64,7 +64,7 @@ int main(void)
     }
     while (1)
     {
-        //process_midi_message(); 
+        process_midi_message(); 
 
         tud_task(); // tinyusb device task
         button_task();
@@ -273,11 +273,7 @@ void process_midi_message(void) {
                 break;
 
             case 0x90: // Note On (check for velocity > 0)
-                if (data2 > 0) {
-                    printf("Note On: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
-                } else {
-                    printf("Note Off (Velocity 0): Note = %d, Channel = %d\n", data1, channel);
-                }
+                printf("Note On: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
                 break;
 
             case 0xA0: // Aftertouch (Polyphonic Pressure)
