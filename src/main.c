@@ -41,6 +41,7 @@ void adc_task(void);
 void midi_task(void);
 void rot_sw_task(void);
 void rot_sw_task(void);
+void process_midi_message(void);
 
 uint ctr = 0; 
 
@@ -63,29 +64,7 @@ int main(void)
     }
     while (1)
     {
-        // debugging 
-        static uint debug = 0; 
-        uint8_t packet[4] = { 0, 0, 0, 0 }; 
-        if ( tud_midi_packet_read(packet) ) 
-        {
-            char voicemeeter_init_str[4] = {0xb0,0x7f,0x7f,0x00};
-
-            if ( ! memcmp( packet + ctr*4, voicemeeter_init_str,4) )
-            {
-                uint8_t note_on[4] = {0xb0,0x7f,0x7f,0x00};
-                tud_midi_stream_write( 0, note_on, 4);
-                //char cc_ack_str[4] = {0xb0,0x7f,0x7f,0x00}; 
-                //tud_midi_packet_write(cc_ack_str); 
-            }
-
-            else
-            {
-                memcpy( data+ctr*4, packet, 4 ); 
-                //printf("hex: %02x %02x %02x %02x\n", packet[0], packet[1], packet[2], packet[3] );
-            }
-            ctr++; 
-        } 
-        //debugging end 
+        //process_midi_message(); 
 
         tud_task(); // tinyusb device task
         button_task();
@@ -272,3 +251,63 @@ void rot_sw_task(void)
         pwm_set_gpio_level( PWM_PIN, sw_ctr );
     }
 }
+
+
+
+#pragma region process midi 
+
+void process_midi_message(void) {
+    uint8_t packet[4]; // USB MIDI messages are 4 bytes
+    if (tud_midi_packet_read(packet)) {
+        uint8_t cable_number = packet[0] >> 4; // First 4 bits for cable number
+        uint8_t status = packet[1];           // MIDI status byte
+        uint8_t data1 = packet[2];            // First data byte (note, controller, etc.)
+        uint8_t data2 = packet[3];            // Second data byte (velocity, value, etc.)
+
+        uint8_t command = status & 0xF0;      // Extract command type
+        uint8_t channel = (status & 0x0F) + 1; // MIDI channel (1-16)
+
+        switch (command) {
+            case 0x80: // Note Off
+                printf("Note Off: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
+                break;
+
+            case 0x90: // Note On (check for velocity > 0)
+                if (data2 > 0) {
+                    printf("Note On: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
+                } else {
+                    printf("Note Off (Velocity 0): Note = %d, Channel = %d\n", data1, channel);
+                }
+                break;
+
+            case 0xA0: // Aftertouch (Polyphonic Pressure)
+                printf("Poly Aftertouch: Note = %d, Pressure = %d, Channel = %d\n", data1, data2, channel);
+                break;
+
+            case 0xB0: // Control Change
+                printf("Control Change: Controller = %d, Value = %d, Channel = %d\n", data1, data2, channel);
+                break;
+
+            case 0xC0: // Program Change (Only 1 data byte)
+                printf("Program Change: Program = %d, Channel = %d\n", data1, channel);
+                break;
+
+            case 0xD0: // Channel Aftertouch (Channel Pressure)
+                printf("Channel Aftertouch: Pressure = %d, Channel = %d\n", data1, channel);
+                break;
+
+            case 0xE0: // Pitch Bend Change
+                {
+                    int16_t bend_value = ((data2 << 7) | data1) - 8192; // 14-bit signed
+                    printf("Pitch Bend: Value = %d, Channel = %d\n", bend_value, channel);
+                }
+                break;
+
+            default:
+                printf("Unknown MIDI Message: %02X %02X %02X\n", status, data1, data2);
+                break;
+        }
+    }
+}
+#pragma endregion
+
