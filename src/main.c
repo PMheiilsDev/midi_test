@@ -44,6 +44,8 @@ void rot_sw_task(void);
 void process_midi_message(void);
 
 uint ctr = 0; 
+char* buffer;
+uint64_t buffer_counter = 0;
 
 
 /*------------- MAIN -------------*/
@@ -62,6 +64,9 @@ int main(void)
     {
         data[i] = 0; 
     }
+
+    buffer = malloc( 0x100 * 128 * sizeof(char) );
+
     while (1)
     {
         process_midi_message(); 
@@ -269,40 +274,42 @@ void process_midi_message(void) {
 
         switch (command) {
             case 0x80: // Note Off
-                printf("Note Off: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
+                sprintf( buffer+128*buffer_counter, "Note Off: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
                 break;
 
             case 0x90: // Note On (check for velocity > 0)
-                printf("Note On: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
+                sprintf( buffer+128*buffer_counter, "Note On: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
                 break;
 
             case 0xA0: // Aftertouch (Polyphonic Pressure)
-                printf("Poly Aftertouch: Note = %d, Pressure = %d, Channel = %d\n", data1, data2, channel);
+                sprintf( buffer+128*buffer_counter,  "Poly Aftertouch: Note = %d, Pressure = %d, Channel = %d\n", data1, data2, channel);
                 break;
 
             case 0xB0: // Control Change
-                printf("Control Change: Controller = %d, Value = %d, Channel = %d\n", data1, data2, channel);
+                sprintf( buffer+128*buffer_counter, "Control Change: Controller = %d, Value = %d, Channel = %d\n", data1, data2, channel);
                 break;
 
             case 0xC0: // Program Change (Only 1 data byte)
-                printf("Program Change: Program = %d, Channel = %d\n", data1, channel);
+                sprintf( buffer+128*buffer_counter, "Program Change: Program = %d, Channel = %d\n", data1, channel);
                 break;
 
             case 0xD0: // Channel Aftertouch (Channel Pressure)
-                printf("Channel Aftertouch: Pressure = %d, Channel = %d\n", data1, channel);
+                sprintf( buffer+128*buffer_counter, "Channel Aftertouch: Pressure = %d, Channel = %d\n", data1, channel);
                 break;
 
             case 0xE0: // Pitch Bend Change
                 {
                     int16_t bend_value = ((data2 << 7) | data1) - 8192; // 14-bit signed
-                    printf("Pitch Bend: Value = %d, Channel = %d\n", bend_value, channel);
+                    sprintf( buffer+128*buffer_counter, "Pitch Bend: Value = %d, Channel = %d\n", bend_value, channel);
                 }
                 break;
 
             default:
-                printf("Unknown MIDI Message: %02X %02X %02X\n", status, data1, data2);
+                sprintf( buffer+128*buffer_counter, "Unknown MIDI Message: %02X %02X %02X\n", status, data1, data2);
                 break;
         }
+    
+        buffer_counter++;
     }
 }
 #pragma endregion
