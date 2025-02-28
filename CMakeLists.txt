@@ -43,7 +43,7 @@ message(STATUS ${OUT})
 
 # Example source
 target_sources(midi_test PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/midi_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_descriptors.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/Button/button.c
         )
