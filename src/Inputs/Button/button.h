@@ -1,6 +1,12 @@
+#ifndef _BUTTON_H
+#define _BUTTON_H
+
 
 #include <inttypes.h>
 #include <stdbool.h>
+
+#include "adc_handler.h"
+#include "led_setup.h"
 
 
 #define BUTTON_AMT 1
@@ -21,3 +27,5 @@ bool button_get_state_midi_number(uint8_t);
 bool button_get_state_gpio(uint8_t);
 
 static uint8_t button_get_gpio( uint8_t );
+
+#endif
