@@ -14,7 +14,8 @@
         "stdio.h": "c",
         "adc_handler.h": "c",
         "tud_handler.h": "c",
-        "gpio.h": "c"
+        "gpio.h": "c",
+        "button.h": "c"
     },
     "cortex-debug.openocdPath": "C:\\VSARM\\sdk\\pico\\openocd\\src\\openocd.exe"
 }

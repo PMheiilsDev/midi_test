@@ -19,7 +19,7 @@
 #include "rotarty_switch.h"
 #include "midi_handler.h"
 #include "adc_handler.h"
-#include "led_setup.h"
+#include "led_handler.h"
 
 
 #pragma endregion
