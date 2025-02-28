@@ -14,10 +14,10 @@
 #define ROT_SW_CLK_PIN 2
 #define ROT_SW_DATA_PIN 3
 
-extern const uint8_t rot_sw_note = 82; 
+extern const uint8_t rot_sw_note; 
 
-extern volatile uint8_t sw_ctr = 0; 
-extern volatile uint8_t sw_ctr_last_sent = 0; 
+extern volatile uint8_t sw_ctr; 
+extern volatile uint8_t sw_ctr_last_sent; 
 
 void rot_sw_setup(void);
 
