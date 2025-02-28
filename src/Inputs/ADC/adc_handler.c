@@ -46,7 +46,7 @@ void adc_task(void)
     else
     {
         //result_0_127 = adc_result >> (12-7);
-        result_0_127 = (((adc_result-200)*(127-80))/(4096-200))+80;
+        result_0_127 = ((adc_result - 201) * (127 - 60)) / (4096 - 201) + 60;
     }
 
     //pwm_set_gpio_level( PWM_PIN, result_0_127 );
