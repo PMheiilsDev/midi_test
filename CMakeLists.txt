@@ -46,12 +46,14 @@ target_sources(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/midi_test.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_descriptors.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/Button/button.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/RotarySW/rotarty_switch.c
         )
 
 # Example include
 target_include_directories(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/Button
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/RotarySW
         )
 
 ## add tinyusb files
