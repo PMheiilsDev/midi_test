@@ -16,5 +16,9 @@
 #define PWM_PIN 11
 #define LED_PIN 22
 
+void adc_setup(void);
+
+void adc_task(void);
+
 
 #endif

@@ -11,7 +11,8 @@
         "cstdlib": "c",
         "adc.h": "c",
         "time.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "adc_handler.h": "c"
     },
     "cortex-debug.openocdPath": "C:\\VSARM\\sdk\\pico\\openocd\\src\\openocd.exe"
 }

@@ -44,20 +44,21 @@ message(STATUS ${OUT})
 # Example source
 target_sources(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/midi_test.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_descriptors.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/midi/midi_handler.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_handler/usb_descriptors.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_handler/midi_handler.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_handler/tud_handler.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/Button/button.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/RotarySW/rotarty_switch.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/Poti/adc_handler.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/ADC/adc_handler.c
         )
 
 # Example include
 target_include_directories(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/midi/
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/usb_handler/
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/Button
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/RotarySW
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/Poti/
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/ADC/
         )
 
 ## add tinyusb files
