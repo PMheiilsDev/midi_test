@@ -1,4 +1,3 @@
-
 #include "rotarty_switch.h"
 
 
@@ -21,27 +20,53 @@ void rot_sw_setup(void)
     gpio_set_dir(ROT_SW_CLK_PIN, GPIO_IN );
     gpio_pull_up(ROT_SW_CLK_PIN);
 
-    gpio_set_irq_enabled_with_callback(ROT_SW_CLK_PIN, GPIO_IRQ_EDGE_RISE, true, &sw_interupt_callback);
+    gpio_set_irq_enabled_with_callback(ROT_SW_CLK_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &sw_interupt_callback);
+    gpio_set_irq_enabled_with_callback(ROT_SW_DATA_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &sw_interupt_callback);
 }
 
-
-
-void sw_interupt_callback()
+void update_counter(bool up)
 {
-    bool data = gpio_get(ROT_SW_DATA_PIN);
-
-    if ( data != 0 )
+    if (up)
     {
-        if ( sw_ctr > 0 )
+        if (sw_ctr < 127)
         {
-            sw_ctr -=1;
+            sw_ctr += 1;
         }
     }
     else
     {
-        if ( sw_ctr < 126 )
+        if (sw_ctr > 0)
         {
-            sw_ctr +=1;
+            sw_ctr -= 1;
+        }
+    }
+}
+
+void sw_interupt_callback(uint gpio, uint32_t events)
+{
+    bool clk = gpio_get(ROT_SW_CLK_PIN);
+    bool data = gpio_get(ROT_SW_DATA_PIN);
+
+    if (events & GPIO_IRQ_EDGE_RISE)
+    {
+        if (gpio == ROT_SW_CLK_PIN)
+        {
+            update_counter(data == 0);
+        }
+        else if (gpio == ROT_SW_DATA_PIN)
+        {
+            update_counter(clk == 1);
+        }
+    }
+    else if (events & GPIO_IRQ_EDGE_FALL)
+    {
+        if (gpio == ROT_SW_CLK_PIN)
+        {
+            update_counter(data == 1);
+        }
+        else if (gpio == ROT_SW_DATA_PIN)
+        {
+            update_counter(clk == 0);
         }
     }
 }
