@@ -7,7 +7,7 @@
 #include "hardware/gpio.h"
 #include "tusb.h"
 
-#define MAX_ROTARY_SWITCHES 4
+extern const uint8_t max_rotray_switches;
 
 typedef struct 
 {
@@ -18,7 +18,7 @@ typedef struct
     volatile uint8_t last_sent;
 } rotary_switch_t;
 
-extern rotary_switch_t rotary_switches[MAX_ROTARY_SWITCHES];
+extern rotary_switch_t rotary_switches[max_rotray_switches];
 
 void rot_sw_setup(void);
 void sw_interupt_callback(uint gpio, uint32_t events);
