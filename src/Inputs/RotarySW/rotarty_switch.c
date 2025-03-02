@@ -3,10 +3,9 @@
 #include "rotarty_switch.h"
 
 
-const uint8_t max_rotray_switches = 2;
 
 
-rotary_switch_t rotary_switches[max_rotray_switches] = 
+rotary_switch_t rotary_switches[MAX_ROTARY_SWITCHES] = 
 {
     {
         .clk_pin =  2,
@@ -21,13 +20,27 @@ rotary_switch_t rotary_switches[max_rotray_switches] =
         .note = 83,
         .counter = 0,
         .last_sent = 0
+    },
+    {
+        .clk_pin =  10,
+        .data_pin =  11,
+        .note = 84,
+        .counter = 0,
+        .last_sent = 0
+    },
+    {
+        .clk_pin =  14,
+        .data_pin =  15,
+        .note = 85,
+        .counter = 0,
+        .last_sent = 0
     }
 };
 
 
 void rot_sw_setup(void)
 {
-    for (int i = 0; i < max_rotray_switches; i++) 
+    for (int i = 0; i < MAX_ROTARY_SWITCHES; i++) 
     {
         gpio_init(rotary_switches[i].clk_pin);
         gpio_set_dir(rotary_switches[i].clk_pin, GPIO_IN);
@@ -64,7 +77,7 @@ void update_counter(rotary_switch_t *rot_sw, bool up)
 
 void sw_interupt_callback(uint gpio, uint32_t events)
 {
-    for (int i = 0; i < max_rotray_switches; i++) 
+    for (int i = 0; i < MAX_ROTARY_SWITCHES; i++) 
     {
         rotary_switch_t *rot_sw = &rotary_switches[i];
         if (gpio == rot_sw->clk_pin || gpio == rot_sw->data_pin) {
@@ -99,7 +112,7 @@ void sw_interupt_callback(uint gpio, uint32_t events)
 
 void rot_sw_task(void)
 {
-    for (int i = 0; i < max_rotray_switches; i++) 
+    for (int i = 0; i < MAX_ROTARY_SWITCHES; i++) 
     {
         rotary_switch_t *rot_sw = &rotary_switches[i];
         if (rot_sw->last_sent != rot_sw->counter) 
