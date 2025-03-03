@@ -37,21 +37,24 @@ void adc_task(void)
     gpio_put( LED_PIN, !gpio_get(LED_PIN ) );
     
     adc_select_input( gpio_to_adc_channel( ADC_PIN ) );
-    /*uint16_t*/ adc_result = adc_read();
     
-    // change this "mapping" so that all 
+    uint32_t adc_sum = 0;
+    for (int i = 0; i < NUM_ADC_READS; i++) 
+    {
+        adc_sum += adc_read();
+        sleep_us(100);
+    }
+    adc_result = adc_sum / NUM_ADC_READS;
+    
     if( adc_result <= 200 )
     {
         result_0_127 = 0;
     }
     else
     {
-        //result_0_127 = adc_result >> (12-7);
-        result_0_127 = ((adc_result - 201) * (127 - 60)) / (4096 - 201) + 60;
+        result_0_127 = ((adc_result - 201) * (127 - 60)) / (4095 - 201) + 60 +1;
     }
 
-    //pwm_set_gpio_level( PWM_PIN, result_0_127 );
-    //pwm_set_gpio_level( PWM_PIN, map(adc_result, 0, 65535, 0, 127 ) );
     long difference = (long)(result_0_127_pref - result_0_127);
     if ( difference > 1 || difference < -1 ) 
     {
