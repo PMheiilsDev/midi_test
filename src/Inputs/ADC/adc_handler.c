@@ -35,7 +35,8 @@ void adc_task(void)
     gpio_put( LED_PIN, 1 );
     
     gpio_put( LED_PIN, !gpio_get(LED_PIN ) );
-    adc_select_input( 1 );
+    
+    adc_select_input( gpio_to_adc_channel( ADC_PIN ) );
     /*uint16_t*/ adc_result = adc_read();
     
     // change this "mapping" so that all 
@@ -61,4 +62,16 @@ void adc_task(void)
 }
 
 
+
+static inline int gpio_to_adc_channel(uint gpio)
+{
+    switch (gpio)
+    {
+        case 26: return 0;
+        case 27: return 1;
+        case 28: return 2;
+        case 29: return 3;
+        default: return -1; // Invalid GPIO for ADC
+    }
+}
 
