@@ -29,6 +29,13 @@ target_link_libraries( midi_test PUBLIC
 get_target_property(OUT midi_test LINK_LIBRARIES)
 message(STATUS ${OUT})
 
+# create the ws2812 pio header file 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/src/Outputs/WS2812/generated/) 
+
+pico_generate_pio_header( midi_test 
+    ${CMAKE_CURRENT_LIST_DIR}/src/Outputs/WS2812/pio/ws2812.pio 
+    OUTPUT_DIR ${CMAKE_CURRENT_LIST_DIR}/src/Outputs/WS2812/generated
+) 
 
 target_link_libraries(midi_test PUBLIC
         #tinyusb_port
@@ -37,7 +44,9 @@ target_link_libraries(midi_test PUBLIC
         tinyusb_board
         hardware_adc
         hardware_pwm
+        hardware_pio
 )
+
 get_target_property(OUT midi_test LINK_LIBRARIES)
 message(STATUS ${OUT})
 
@@ -51,6 +60,7 @@ target_sources(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/RotarySW/rotarty_switch.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/ADC/adc_handler.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/LED/Digital/led_handler.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/WS2812/ws2812_handler.c 
         )
 
 # Example include
@@ -61,6 +71,8 @@ target_include_directories(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/RotarySW
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/ADC/
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/LED/Digital/
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/WS2812/
+        ${CMAKE_CURRENT_LIST_DIR}/src/Outputs/WS2812/generated/
         )
 
 ## add tinyusb files
