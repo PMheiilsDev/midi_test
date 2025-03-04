@@ -15,7 +15,10 @@
         "adc_handler.h": "c",
         "tud_handler.h": "c",
         "gpio.h": "c",
-        "button.h": "c"
+        "button.h": "c",
+        "ws2812_handler.h": "c",
+        "ws2812.pio.h": "c",
+        "timer.h": "c"
     },
     "cortex-debug.openocdPath": "C:\\VSARM\\sdk\\pico\\openocd\\src\\openocd.exe"
 }

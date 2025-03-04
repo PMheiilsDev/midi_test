@@ -43,6 +43,8 @@ uint ctr = 0;
 /*------------- MAIN -------------*/
 int main(void)
 {
+    ws2812_init();
+
     led_setup();
     adc_setup();
     rot_sw_setup();
