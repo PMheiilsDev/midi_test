@@ -5,6 +5,10 @@
 
 #define WS2812_PIN 7 
 
+// never got an error when using 110 us 
+// some datasheets say 50 us (100 us gives errors), some say 280 us
+#define WS2812_T_REST 500 
+
 #define WS2812_PIO pio0 
 
 void ws2812_init(); 

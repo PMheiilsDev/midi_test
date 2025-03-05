@@ -2,6 +2,8 @@
 # include "ws2812_handler.h"
 
 #include "pico/time.h"
+#include "pico/stdio.h"
+#include <stdio.h>
 
 PIO ws2812_pio;
 uint sm;
@@ -10,44 +12,19 @@ uint offset;
 
 void ws2812_init()
 {
+    stdio_init_all();
     
     pio_claim_free_sm_and_add_program( &ws2812_program, &ws2812_pio, &sm, &offset );
 
     ws2812_program_init( ws2812_pio, sm, offset, WS2812_PIN, 800000, false );
 
-    for ( uint ji = 5; ji > 0; ji--)
+    for ( uint i = 0; i < 100000 ; i++ )
     {
-        for ( uint j = 200; j > 0; j-- )
-        {
-            for ( uint i = 0; i < 1000; i++ )
-            {
-                if ( j == i ) 
-                    ws2812_set_pixel( 0, 50, 0 );
-
-                else 
-                    ws2812_set_pixel( 0, 0, 10 );
-            }
-            sleep_us( ji * 200 );
-        }
-        for ( uint j = 0; j < 200; j++ )
-        {
-            for ( uint i = 0; i < 1000; i++ )
-            {
-                if ( j == i ) 
-                    ws2812_set_pixel( 0, 10, 0 );
-
-                else 
-                    ws2812_set_pixel( 0, 0, 10 );
-            }
-            sleep_us( ji * 200 );
-        }
+        sleep_us(WS2812_T_REST);
+        ws2812_set_pixel( 1, 1, 1 );
     }
-    
-    sleep_ms( 100 );
-    for ( uint i = 0; i < 1000; i++ )
-    {
-        ws2812_set_pixel( 0, 0, 0 );
-    }
+    sleep_ms(10);
+    ws2812_set_pixel( 0, 0, 0 );
 }
 
 void ws2812_set_pixel( uint8_t r, uint8_t g, uint8_t b )
