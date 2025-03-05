@@ -19,31 +19,6 @@ void ws2812_init()
 
     ws2812_program_init( ws2812_pio, sm, offset, WS2812_PIN, 800000, false );
 
-    ws2812_pixels[0].r = 5;
-    ws2812_pixels[0].g = 0;
-    ws2812_pixels[0].b = 0;
-
-    ws2812_pixels[1].r = 0;
-    ws2812_pixels[1].g = 5;
-    ws2812_pixels[1].b = 0;
-
-    ws2812_pixels[2].r = 0;
-    ws2812_pixels[2].g = 0;
-    ws2812_pixels[2].b = 5;
-
-    ws2812_pixels[3].r = 5;
-    ws2812_pixels[3].g = 5;
-    ws2812_pixels[3].b = 0;
-
-    ws2812_pixels[4].r = 0;
-    ws2812_pixels[4].g = 5;
-    ws2812_pixels[4].b = 5;
-
-    for ( uint i = 0; i < 100; i++ )
-    {
-        ws2812_update();
-    }
-
 }
 
 static void ws2812_set_pixel( uint8_t r, uint8_t g, uint8_t b )
