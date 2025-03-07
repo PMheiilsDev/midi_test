@@ -47,3 +47,6 @@ static inline int gpio_to_adc_channel(uint gpio);
 //  - this might make add delay
 
 
+// ADC TODO 
+// - add support for using analog multiplexer to read multiple analog inputs
+
