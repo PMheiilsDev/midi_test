@@ -42,6 +42,10 @@ void adc_task(void);
 /// @return ADC channel number 
 static inline int gpio_to_adc_channel(uint gpio);
 
+/// @brief set the value of the gpio pins set in the adc_channel
+/// @param adc_channel pointer to the adc_channel_t 
+void adc_set_mul_plex_gpios( adc_channel_t *adc_channel );
+
 #endif
 
 
