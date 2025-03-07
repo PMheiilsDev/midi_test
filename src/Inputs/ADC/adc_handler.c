@@ -5,24 +5,36 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
     {
         .pin = 26,
         .note = 81,
+        .is_mul_plex = true, 
+        .mul_plex_channel = 0,
+        .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
         .result_pref = 0
     },
     {
         .pin = 27,
         .note = 82,
+        .is_mul_plex = true, 
+        .mul_plex_channel = 1,
+        .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
         .result_pref = 0
     },
     {
         .pin = 28,
         .note = 83,
+        .is_mul_plex = true, 
+        .mul_plex_channel = 2,
+        .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
         .result_pref = 0
     },
     {
         .pin = 29,
         .note = 84,
+        .is_mul_plex = true, 
+        .mul_plex_channel = 3,
+        .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
         .result_pref = 0
     }
@@ -35,6 +47,16 @@ void adc_setup(void)
     for (int i = 0; i < MAX_ADC_CHANNELS; i++) 
     {
         adc_gpio_init(adc_channels[i].pin);
+
+        if ( adc_channels[i].is_mul_plex ) 
+        {
+            for ( uint j = 0; j < sizeof( adc_channels[i].mul_plex ); j++ ) 
+            {
+                gpio_set_function(adc_channels[i].mul_plex[j], GPIO_FUNC_SIO);
+                gpio_put(adc_channels[i].mul_plex[j], 0);
+                gpio_set_dir(adc_channels[i].mul_plex[j], GPIO_OUT);
+            }
+        }
     }
 }
 

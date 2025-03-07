@@ -14,10 +14,16 @@
 #define MAX_ADC_CHANNELS 4
 #define NUM_ADC_READS 20
 
+#define ADC_MUL_PLEX_GPIO_0 18
+#define ADC_MUL_PLEX_GPIO_1 19 
+#define ADC_MUL_PLEX_GPIO_2 20
+
 typedef struct 
 {
     uint8_t pin;
     uint8_t note;
+    uint8_t is_mul_plex: 1, mul_plex_channel : 3; // assuming that the multiplexer has 3 pins for channel selection 
+    uint8_t mul_plex[3];
     uint16_t result;
     uint16_t result_pref;
 } 
@@ -49,4 +55,6 @@ static inline int gpio_to_adc_channel(uint gpio);
 
 // ADC TODO 
 // - add support for using analog multiplexer to read multiple analog inputs
+
+// ((( it might be possible to check if a multiplexer is connected by connecting one of the 8 channels to a fixed level )))
 
