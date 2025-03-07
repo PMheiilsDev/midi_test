@@ -56,7 +56,7 @@ void adc_task(void)
     }
 
     long difference = (long)(result_0_127_pref - result_0_127);
-    if ( difference > 1 || difference < -1 ) 
+    if ( difference >= 1 || difference <= -1 ) 
     {
         result_0_127_pref = result_0_127;
         uint8_t note_on[3] = { 0b10110000 | 0, 81, result_0_127 };
