@@ -25,10 +25,15 @@ adc_channel_t;
 
 extern adc_channel_t adc_channels[MAX_ADC_CHANNELS];
 
+/// @brief setting up all necessary ADCs from cdc_channels 
 void adc_setup(void);
 
+/// @brief handling all ADCs from adc_channels 
 void adc_task(void);
 
+/// @brief converting a GPIO pin to an ADC channel 
+/// @param gpio GPIO pin number 
+/// @return ADC channel number 
 static inline int gpio_to_adc_channel(uint gpio);
 
 #endif
