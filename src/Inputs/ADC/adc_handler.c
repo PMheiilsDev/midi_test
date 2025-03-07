@@ -65,6 +65,11 @@ void adc_task(void)
 
     for (int i = 0; i < MAX_ADC_CHANNELS; i++) 
     {
+        if ( adc_channels[i].is_mul_plex ) 
+        {
+            adc_set_mul_plex_gpios(&adc_channels[i]);
+        }
+
         adc_select_input(gpio_to_adc_channel(adc_channels[i].pin));
 
         uint32_t adc_sum = 0;
@@ -105,6 +110,19 @@ static inline int gpio_to_adc_channel(uint gpio)
         case 28: return 2;
         case 29: return 3;
         default: return -1; // Invalid GPIO for ADC
+    }
+}
+
+void adc_set_mul_plex_gpios( adc_channel_t *adc_channel )
+{
+    // for all the gpio pins in the channel 
+    for ( uint i = 0; i < sizeof( adc_channel->mul_plex ); i++ ) 
+    {
+        // set the gpio pin to the correct bit of the channel number
+        gpio_put(adc_channel->mul_plex[i], (adc_channel->mul_plex_channel >> i) & 1);
+
+        // here might be some delay needed (minimise)  
+        //sleep_us(10);
     }
 }
 
