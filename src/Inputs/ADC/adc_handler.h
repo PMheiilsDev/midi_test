@@ -11,11 +11,19 @@
 #include "hardware/pwm.h"
 #include "tusb.h"
 
+#define MAX_ADC_CHANNELS 4
+#define NUM_ADC_READS 20
 
-#define ADC_PIN 28
-#define PWM_PIN 11
-#define LED_PIN 22
-#define NUM_ADC_READS 5
+typedef struct 
+{
+    uint8_t pin;
+    uint8_t note;
+    uint16_t result;
+    uint16_t result_pref;
+} 
+adc_channel_t;
+
+extern adc_channel_t adc_channels[MAX_ADC_CHANNELS];
 
 void adc_setup(void);
 
@@ -31,6 +39,6 @@ static inline int gpio_to_adc_channel(uint gpio);
 //
 // create a function that can simulate a Highpass filter by interpolating 
 // filter values that are off from average 
-//  - this might make add delay 
+//  - this might make add delay
 
 

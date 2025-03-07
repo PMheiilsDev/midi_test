@@ -1,66 +1,74 @@
-
 #include "adc_handler.h"
 
-
-
+adc_channel_t adc_channels[MAX_ADC_CHANNELS] = 
+{
+    {
+        .pin = 26,
+        .note = 81,
+        .result = 0,
+        .result_pref = 0
+    },
+    {
+        .pin = 27,
+        .note = 82,
+        .result = 0,
+        .result_pref = 0
+    },
+    {
+        .pin = 28,
+        .note = 83,
+        .result = 0,
+        .result_pref = 0
+    },
+    {
+        .pin = 29,
+        .note = 84,
+        .result = 0,
+        .result_pref = 0
+    }
+};
 
 void adc_setup(void)
 {
     adc_init();
-    adc_gpio_init( ADC_PIN );
 
-
-    gpio_set_function( PWM_PIN, GPIO_FUNC_PWM );
-    uint slice_num = pwm_gpio_to_slice_num(11);
-
-    pwm_set_wrap(slice_num, 127);
-
-    pwm_set_enabled( slice_num, true );
-    
-    pwm_set_gpio_level( PWM_PIN, 127 );
-    
-
-    for ( uint16_t i = 0; i <= 127; i++ )
+    for (int i = 0; i < MAX_ADC_CHANNELS; i++) 
     {
-        pwm_set_gpio_level( PWM_PIN, i );
-        sleep_ms( 10 );
+        adc_gpio_init(adc_channels[i].pin);
     }
 }
 
-uint16_t result_0_127 = 0;
-uint16_t result_0_127_pref = 0;
-uint16_t adc_result;
 void adc_task(void)
 {
-    gpio_put( LED_PIN, 1 );
-    
-    gpio_put( LED_PIN, !gpio_get(LED_PIN ) );
-    
-    adc_select_input( gpio_to_adc_channel( ADC_PIN ) );
-    
-    uint32_t adc_sum = 0;
-    for (int i = 0; i < NUM_ADC_READS; i++) 
-    {
-        adc_sum += adc_read();
-        sleep_us(100);
-    }
-    adc_result = adc_sum / NUM_ADC_READS;
-    
-    if( adc_result <= 200 )
-    {
-        result_0_127 = 0;
-    }
-    else
-    {
-        result_0_127 = ((adc_result - 201) * (127 - 60)) / (4095 - 201) + 60 +1;
-    }
 
-    long difference = (long)(result_0_127_pref - result_0_127);
-    if ( difference > 1 || difference < -1 ) 
+    for (int i = 0; i < MAX_ADC_CHANNELS; i++) 
     {
-        result_0_127_pref = result_0_127;
-        uint8_t note_on[3] = { 0b10110000 | 0, 81, result_0_127 };
-        tud_midi_stream_write( 0, note_on, 3);
+        adc_select_input(gpio_to_adc_channel(adc_channels[i].pin));
+
+        uint32_t adc_sum = 0;
+        for (int j = 0; j < NUM_ADC_READS; j++) 
+        {
+            adc_sum += adc_read();
+            sleep_us(100);
+        }
+
+        adc_channels[i].result = adc_sum / NUM_ADC_READS;
+
+        if (adc_channels[i].result <= 200) 
+        {
+            adc_channels[i].result = 0;
+        }
+        else 
+        {
+            adc_channels[i].result = ((adc_channels[i].result - 201) * (127 - 60)) / (4095 - 201) + 60 + 1;
+        }
+        
+        if (adc_channels[i].result_pref != adc_channels[i].result ) 
+        {
+            adc_channels[i].result_pref = adc_channels[i].result;
+            uint8_t note_on[3] = {0b10110000 | 0, adc_channels[i].note, adc_channels[i].result};
+            tud_midi_stream_write(0, note_on, 3);
+        }
     }
 }
 
