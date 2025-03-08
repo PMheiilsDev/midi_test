@@ -2,5 +2,5 @@
   (version 7)
   (lib (name "Potentiometer")(type "KiCad")(uri "${KIPRJMOD}/../../libs/Potentiometer.pretty")(options "")(descr ""))
   (lib (name "Switch_Keyboard_Cherry_MX")(type "KiCad")(uri "${KIPRJMOD}/../../libs/kiswitch/library/footprints/Switch_Keyboard_Cherry_MX.pretty")(options "")(descr ""))
-  (lib (name "MCU_RaspberryPi_and_Boards")(type "KiCad")(uri "C:/RP2040/dev/midi_test/_pcb/libs/PiPico/RP-Pico Libraries/MCU_RaspberryPi_and_Boards.pretty")(options "")(descr ""))
+  (lib (name "MCU_RaspberryPi_and_Boards")(type "KiCad")(uri "${KIPRJMOD}/../../libs/PiPico/RP-Pico Libraries/MCU_RaspberryPi_and_Boards.pretty")(options "")(descr ""))
 )
