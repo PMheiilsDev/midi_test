@@ -22,6 +22,9 @@
 #include "led_handler.h"
 #include "ws2812_handler.h"
 
+#include "pico/time.h"
+
+
 
 #pragma endregion
 
@@ -39,6 +42,8 @@ void button_task(void);
 
 uint ctr = 0; 
 
+uint64_t loop_time = 0;
+uint64_t loop_time_pref = 0;
 
 /*------------- MAIN -------------*/
 int main(void)
@@ -61,8 +66,12 @@ int main(void)
 
     buffer = malloc( 0x100 * 128 * sizeof(char) );
 
+    
     while (1)
     {
+        loop_time_pref = loop_time;
+        loop_time = time_us_64();
+        
         process_midi_message(); 
 
         tud_task(); // tinyusb device task
