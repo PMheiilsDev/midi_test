@@ -582,6 +582,14 @@
     [
       "f23f292d-bce7-4f3d-8f4f-e415aa1ad861",
       "ADC"
+    ],
+    [
+      "f6d77219-40c2-4030-a5e3-af0675a88f0e",
+      "Buttons"
+    ],
+    [
+      "56e82540-e2b6-44d8-85c4-896b43117f50",
+      "RotarySW"
     ]
   ],
   "text_variables": {}
