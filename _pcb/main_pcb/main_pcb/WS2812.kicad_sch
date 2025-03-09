@@ -2,7 +2,7 @@
 	(version 20231120)
 	(generator "eeschema")
 	(generator_version "8.0")
-	(uuid "a105e6eb-163b-4d67-a00d-883d2ca35ef4")
+	(uuid "7c86b6a2-2841-4ebd-bd5f-3bc04680a295")
 	(paper "A4")
 	(lib_symbols
 		(symbol "LED:WS2812B"

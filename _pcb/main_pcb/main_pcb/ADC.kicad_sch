@@ -549,10 +549,16 @@
 		(uuid "191f633a-7fae-4e91-9a4b-a062b9a04987")
 	)
 	(junction
-		(at 214.63 39.37)
+		(at 214.63 38.1)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "45c1b00b-aeab-431e-a806-465a2dacd38a")
+		(uuid "28ba4b4d-bfe1-4ec6-8684-e05f690b406b")
+	)
+	(junction
+		(at 198.12 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7a2fe720-970d-4aba-a9d6-385bd9d24b60")
 	)
 	(junction
 		(at 154.94 95.25)
@@ -561,16 +567,22 @@
 		(uuid "8dfb1d29-9c5e-4f1c-8aed-148385bc7ba8")
 	)
 	(junction
+		(at 229.87 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "95c5a7d9-6639-4ebe-bea6-fa5dc8d5fa2a")
+	)
+	(junction
+		(at 237.49 40.64)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a99fa5ac-4d19-45d0-8ed5-4e205a3a1c20")
+	)
+	(junction
 		(at 162.56 95.25)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "b10a50ac-9a7b-4157-8101-c21322ace061")
-	)
-	(junction
-		(at 198.12 39.37)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c64c77dd-a54f-4acf-b4ad-40481ded18ca")
 	)
 	(wire
 		(pts
@@ -614,6 +626,16 @@
 	)
 	(wire
 		(pts
+			(xy 237.49 40.64) (xy 241.3 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3d7e5bba-c11b-4692-8d0a-04fc187de43b")
+	)
+	(wire
+		(pts
 			(xy 205.74 40.64) (xy 222.25 40.64)
 		)
 		(stroke
@@ -621,6 +643,16 @@
 			(type default)
 		)
 		(uuid "4174b613-a317-461d-9d78-70ea61373a3d")
+	)
+	(wire
+		(pts
+			(xy 198.12 38.1) (xy 198.12 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5f7d5b23-f9f9-47a9-b915-7c0b6faab511")
 	)
 	(wire
 		(pts
@@ -644,7 +676,7 @@
 	)
 	(wire
 		(pts
-			(xy 214.63 39.37) (xy 229.87 39.37)
+			(xy 214.63 38.1) (xy 229.87 38.1)
 		)
 		(stroke
 			(width 0)
@@ -654,7 +686,7 @@
 	)
 	(wire
 		(pts
-			(xy 198.12 39.37) (xy 214.63 39.37)
+			(xy 198.12 38.1) (xy 214.63 38.1)
 		)
 		(stroke
 			(width 0)
@@ -674,13 +706,13 @@
 	)
 	(wire
 		(pts
-			(xy 198.12 39.37) (xy 198.12 52.07)
+			(xy 214.63 38.1) (xy 214.63 52.07)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "751832dd-f447-4f0c-944b-528a129d7b20")
+		(uuid "76a044fb-a1cc-4432-b46f-f5c4b62535d1")
 	)
 	(wire
 		(pts
@@ -691,16 +723,6 @@
 			(type default)
 		)
 		(uuid "776f3a11-8b07-4ee5-beee-e2dc3cc3750c")
-	)
-	(wire
-		(pts
-			(xy 214.63 39.37) (xy 214.63 52.07)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7aacecd7-c619-4d6f-a62b-623b28eb11ea")
 	)
 	(wire
 		(pts
@@ -724,7 +746,7 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 52.07) (xy 181.61 39.37)
+			(xy 181.61 52.07) (xy 181.61 38.1)
 		)
 		(stroke
 			(width 0)
@@ -741,6 +763,16 @@
 			(type default)
 		)
 		(uuid "966181c0-9fd3-45d4-b47a-d7f40eb54a5b")
+	)
+	(wire
+		(pts
+			(xy 229.87 38.1) (xy 241.3 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96a55dc5-2a27-4756-a7c5-e704443337b0")
 	)
 	(wire
 		(pts
@@ -804,7 +836,7 @@
 	)
 	(wire
 		(pts
-			(xy 181.61 39.37) (xy 198.12 39.37)
+			(xy 181.61 38.1) (xy 198.12 38.1)
 		)
 		(stroke
 			(width 0)
@@ -834,7 +866,7 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 39.37) (xy 229.87 52.07)
+			(xy 229.87 38.1) (xy 229.87 52.07)
 		)
 		(stroke
 			(width 0)
@@ -861,6 +893,28 @@
 			(type default)
 		)
 		(uuid "fe29b84d-72c7-4f16-ac99-c36089f432cb")
+	)
+	(global_label "3.3 V"
+		(shape input)
+		(at 241.3 40.64 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "3895b6b6-d120-405a-96b7-fc0dec23300a")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 249.3652 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
 	)
 	(global_label "ADC_MUL_PLEX_GPIO_2"
 		(shape input)
@@ -924,6 +978,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "GND"
+		(shape input)
+		(at 241.3 38.1 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "b800707f-bee1-4ff6-b29f-36af9556a0be")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 248.1557 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
