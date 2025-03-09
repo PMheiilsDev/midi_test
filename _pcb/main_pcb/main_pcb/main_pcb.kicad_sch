@@ -1241,6 +1241,16 @@
 	)
 	(wire
 		(pts
+			(xy 118.11 134.62) (xy 121.92 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2a69c695-dd67-4f1d-9558-25ff3014dbd5")
+	)
+	(wire
+		(pts
 			(xy 80.01 111.76) (xy 82.55 111.76)
 		)
 		(stroke
@@ -1739,6 +1749,28 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "WS2812_GPIO"
+		(shape input)
+		(at 121.92 134.62 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "504b6c5c-544c-4889-b51d-5e644e124e43")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 137.847 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -2678,6 +2710,44 @@
 				(path "/b764235d-842d-41df-960a-a32e4258c2ec"
 					(reference "U1")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet
+		(at 194.31 66.04)
+		(size 31.75 20.32)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "33fcc98e-db31-4584-ac2d-d0bb4aa805ac")
+		(property "Sheetname" "WS2812"
+			(at 194.31 65.3284 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "WS2812.kicad_sch"
+			(at 194.31 86.9446 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "main_pcb"
+				(path "/b764235d-842d-41df-960a-a32e4258c2ec"
+					(page "5")
 				)
 			)
 		)

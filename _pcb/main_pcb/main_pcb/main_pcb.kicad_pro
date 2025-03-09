@@ -590,6 +590,10 @@
     [
       "56e82540-e2b6-44d8-85c4-896b43117f50",
       "RotarySW"
+    ],
+    [
+      "33fcc98e-db31-4584-ac2d-d0bb4aa805ac",
+      "WS2812"
     ]
   ],
   "text_variables": {}
