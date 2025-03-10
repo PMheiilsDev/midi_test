@@ -12,6 +12,14 @@
 
 #define IO_EXPANDER_ADDR 0x20 
 
+// for the PCF8575 writing two bytes sets the state of the pins 
+// if a pin is 0 then the  pins connects to GND with a small resistance
+// if a pin is 1 then the pin is high impedance 
+// if a pin is 1 it can be used as input 
+
+
+bool IOexpander_init(void);
+
 
 #endif
 

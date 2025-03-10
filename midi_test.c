@@ -21,6 +21,7 @@
 #include "adc_handler.h"
 #include "led_handler.h"
 #include "ws2812_handler.h"
+#include "IOexpander.h"
 
 #include "pico/time.h"
 
@@ -49,6 +50,8 @@ uint64_t loop_time_pref = 0;
 int main(void)
 {
     ws2812_init();
+
+    IOexpander_init();
 
     led_setup();
     adc_setup();
