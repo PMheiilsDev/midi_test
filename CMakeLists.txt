@@ -45,6 +45,7 @@ target_link_libraries(midi_test PUBLIC
         hardware_adc
         hardware_pwm
         hardware_pio
+        hardware_i2c
 )
 
 get_target_property(OUT midi_test LINK_LIBRARIES)
@@ -61,6 +62,7 @@ target_sources(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/ADC/adc_handler.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/LED/Digital/led_handler.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/WS2812/ws2812_handler.c 
+        ${CMAKE_CURRENT_LIST_DIR}/src/IOexpander/ioexpander.c 
         )
 
 # Example include
@@ -73,6 +75,7 @@ target_include_directories(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/LED/Digital/
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/WS2812/
         ${CMAKE_CURRENT_LIST_DIR}/src/Outputs/WS2812/generated/
+        ${CMAKE_CURRENT_LIST_DIR}/src/IOexpander/
         )
 
 ## add tinyusb files
