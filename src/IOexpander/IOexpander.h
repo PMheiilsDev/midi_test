@@ -15,7 +15,9 @@
 // for the PCF8575 writing two bytes sets the state of the pins 
 // if a pin is 0 then the  pins connects to GND with a small resistance
 // if a pin is 1 then the pin is high impedance 
+
 // if a pin is 1 it can be used as input 
+// meaning that the read bit of that pin will be 0 if connected to GND and else 1 (as it has a pull up resistor)
 
 
 bool IOexpander_init(void);
