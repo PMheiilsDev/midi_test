@@ -34,7 +34,7 @@ bool IOexpander_init(void)
 void IOexpander_set_function( uint8_t pin_num, IOexpander_pin_func_t value )
 {
     IOexpander_pin_func = (IOexpander_pin_func & ~(1 << pin_num)) | ((value & 1) << pin_num);
-    //IOexpander_pin_func |= ( value&1 << pin_num ); 
+    
 }
 
 
