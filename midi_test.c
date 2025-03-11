@@ -53,6 +53,11 @@ int main(void)
 
     IOexpander_init();
 
+    IOexpander_set_function(10, IO_EXPANDER_PIN_FUNC_OUTPUT);
+    IOexpander_put(10, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
+
+    IOexpander_write(true);
+
     led_setup();
     adc_setup();
     rot_sw_setup();

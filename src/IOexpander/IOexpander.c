@@ -33,13 +33,15 @@ bool IOexpander_init(void)
 
 void IOexpander_set_function( uint8_t pin_num, IOexpander_pin_func_t value )
 {
-    IOexpander_pin_func |= ( value&1 << pin_num ); 
+    IOexpander_pin_func = (IOexpander_pin_func & ~(1 << pin_num)) | ((value & 1) << pin_num);
+    //IOexpander_pin_func |= ( value&1 << pin_num ); 
 }
 
 
 void IOexpander_put( uint8_t pin_num, IOexpander_pin_output_state_t value )
 {
-    IOexpander_pin_state |= ( value&1 << pin_num );
+    IOexpander_pin_state = (IOexpander_pin_state & ~(1 << pin_num)) | ((value & 1) << pin_num);
+    //IOexpander_pin_state |= ( value&1 << pin_num );
 }
 
 
@@ -49,6 +51,13 @@ IOexpander_pin_func_t IOexpander_get_function( uint8_t pin_num )
     return (IOexpander_pin_func >> pin_num) & 1; 
 }
 
+static uint8_t reverse_bits(uint8_t byte)
+{
+    byte = (byte & 0xF0) >> 4 | (byte & 0x0F) << 4;
+    byte = (byte & 0xCC) >> 2 | (byte & 0x33) << 2;
+    byte = (byte & 0xAA) >> 1 | (byte & 0x55) << 1;
+    return byte;
+}
 
 bool IOexpander_write( bool force )
 {
@@ -56,8 +65,8 @@ bool IOexpander_write( bool force )
     {
         // if the pin is input set to 1 or if the pin is highz set to 1 
         uint8_t data [2];
-        data[0] = ( ( IOexpander_pin_func | IOexpander_pin_state ) >> 0 ) & 0xFF;
-        data[1] = ( ( IOexpander_pin_func | IOexpander_pin_state ) >> 8 ) & 0xFF;
+        data[0] = reverse_bits( ( ( IOexpander_pin_func | IOexpander_pin_state ) >> 0 ) & 0xFF );
+        data[1] = reverse_bits( ( ( IOexpander_pin_func | IOexpander_pin_state ) >> 8 ) & 0xFF );
 
         i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, sizeof(data), false);
         
