@@ -53,6 +53,28 @@ int main(void)
 
     IOexpander_init();
 
+    // LED should be on 
+    IOexpander_set_function(0, IO_EXPANDER_PIN_FUNC_OUTPUT);
+    IOexpander_put(0, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
+    
+    // LED should be off
+    IOexpander_set_function(1, IO_EXPANDER_PIN_FUNC_OUTPUT);
+    IOexpander_put(1, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
+
+    // LED should be off
+    IOexpander_set_function(2, IO_EXPANDER_PIN_FUNC_INPUT);
+    IOexpander_put(2, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
+
+    // LED should be off
+    IOexpander_set_function(3, IO_EXPANDER_PIN_FUNC_INPUT);
+    IOexpander_put(3, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
+    
+    
+    IOexpander_write(true);
+
+
+
+
     for ( uint i = 0; i < 16; i++ )
     {
         IOexpander_set_function(i, IO_EXPANDER_PIN_FUNC_OUTPUT);

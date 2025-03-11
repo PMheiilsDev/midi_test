@@ -65,8 +65,8 @@ bool IOexpander_write( bool force )
     {
         // if the pin is input set to 1 or if the pin is highz set to 1 
         uint8_t data [2];
-        data[0] = ( ( IOexpander_pin_func | IOexpander_pin_state ) >> 0 ) & 0xFF;
-        data[1] = ( ( IOexpander_pin_func | IOexpander_pin_state ) >> 8 ) & 0xFF;
+        data[0] = ( ( IOexpander_pin_func | (~IOexpander_pin_func & IOexpander_pin_state) ) >> 0 ) & 0xFF;
+        data[1] = ( ( IOexpander_pin_func | (~IOexpander_pin_func & IOexpander_pin_state) ) >> 8 ) & 0xFF;
 
         i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, sizeof(data), false);
         
@@ -86,7 +86,11 @@ bool IOexpander_read()
 
     IOexpander_pin_state = ((data[1] << 8) | data[0]) & ~IOexpander_pin_func;
 
-    return IOexpander_pin_state != IOexpander_pin_state_pref;
+    bool ret = IOexpander_pin_state != IOexpander_pin_state_pref;
+
+    IOexpander_pin_state_pref = IOexpander_pin_state;
+
+    return ret;
 }
 
 
