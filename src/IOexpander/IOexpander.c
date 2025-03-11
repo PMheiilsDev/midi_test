@@ -23,6 +23,55 @@ bool IOexpander_init(void)
     {
         return false; 
     }
+
+    //! MISSING turn all pins to high impedance 
+
     return true; 
 }
+
+
+
+
+
+
+void IOexpander_set_function( uint8_t pin_num, IOexpander_pin_func_t value )
+{
+    IOexpander_pin_func |= ( value&1 << pin_num ); 
+}
+
+
+void IOexpander_put( uint8_t pin_num, IOexpander_pin_output_state_t value )
+{
+    IOexpander_pin_state |= ( value&1 << pin_num );
+}
+
+
+IOexpander_pin_func_t IOexpander_get_function( uint8_t pin_num )
+{
+    // this does not use the enums just leave it this way 
+    return (IOexpander_pin_func >> pin_num) & 1; 
+}
+
+
+
+
+
+bool IOexpander_write( bool force )
+{
+    if ( force || ( IOexpander_pin_func != IOexpander_pin_func_pref ) || ( IOexpander_pin_state != IOexpander_pin_state_pref ) )
+    {
+        // if the pin is input set to 1 or if the pin is highz set to 1 
+        uint16_t data = IOexpander_pin_func | IOexpander_pin_state;
+
+        i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, &data, sizeof(data), false);
+        
+        IOexpander_pin_func_pref = IOexpander_pin_func;
+        IOexpander_pin_state_pref = IOexpander_pin_state;
+
+        return true;
+    }
+    return false;
+}
+
+
 
