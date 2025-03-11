@@ -59,6 +59,19 @@ int main(void)
         IOexpander_put(i, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
         IOexpander_write(true);
     }
+    for ( uint i = 0; i < 16; i++ ) 
+    {
+        IOexpander_set_function(i, IO_EXPANDER_PIN_FUNC_OUTPUT);
+        IOexpander_put(i, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
+        IOexpander_write(true);
+    }
+    bool d = false;
+    for ( uint i = 0; i < 16; i++ ) 
+    {
+        IOexpander_set_function(i, IO_EXPANDER_PIN_FUNC_INPUT);
+        d = IOexpander_get( i, true );
+        printf("pin %d is %d\n", i, d);
+    }
     //IOexpander_set_function(10, IO_EXPANDER_PIN_FUNC_OUTPUT);
     //IOexpander_put(10, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
 
