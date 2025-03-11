@@ -63,17 +63,26 @@ int main(void)
 
     // LED should be off
     IOexpander_set_function(2, IO_EXPANDER_PIN_FUNC_INPUT);
-    IOexpander_put(2, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
 
     // LED should be off
     IOexpander_set_function(3, IO_EXPANDER_PIN_FUNC_INPUT);
-    IOexpander_put(3, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
     
+    for ( uint i = 4; i < 16; i++ )
+    {
+        IOexpander_set_function(i, IO_EXPANDER_PIN_FUNC_INPUT);
+    }
     
     IOexpander_write(true);
 
+    IOexpander_read();
 
+    
+    int _0 = IOexpander_get(0, false); 
+    int _1 = IOexpander_get(1, false); 
+    int _2 = IOexpander_get(2, false); 
+    int _3 = IOexpander_get(3, false); 
 
+    printf("%d %d %d %d\n", _0, _1, _2, _3);
 
     for ( uint i = 0; i < 16; i++ )
     {

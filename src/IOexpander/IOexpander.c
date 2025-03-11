@@ -84,7 +84,7 @@ bool IOexpander_read()
     uint8_t data [2];
     i2c_read_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, sizeof(data), false);
 
-    IOexpander_pin_state = ((data[1] << 8) | data[0]) & ~IOexpander_pin_func;
+    IOexpander_pin_state = ((data[1] << 8) | data[0]) /*& IOexpander_pin_func*/;
 
     bool ret = IOexpander_pin_state != IOexpander_pin_state_pref;
 
