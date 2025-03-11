@@ -19,6 +19,17 @@
 // if a pin is 1 it can be used as input 
 // meaning that the read bit of that pin will be 0 if connected to GND and else 1 (as it has a pull up resistor)
 
+//todo what I want from the functions:
+//  when sending to pcf a pin is 1 when it is input or if it output and is high z 
+//                      a pin is 0 when it is output and low  
+// that means: pin = input | (output & high_z) 
+
+// when reading from pcf 
+//                      never connect a pin to vdd without a resistor as it is connected to GND at startup 
+//                      return 0 when pin is connected to GND
+//                      return 1 when pin is connected to VDD (pull up resistor or floating)
+//                      return -1 when pin is output
+
 //? ( dont make these extern no access to them from out side )
 //? extern uint16_t IOexpander_pin_func;
 //? extern uint16_t IOexpander_pin_func_pref;
