@@ -53,7 +53,6 @@ IOexpander_pin_output_state_t;
 
 typedef enum 
 {
-    IO_EXPANDER_PIN_INPUT_STATE_ERROR = -1,
     IO_EXPANDER_PIN_INPUT_STATE_LOW = 0,
     IO_EXPANDER_PIN_INPUT_STATE_HIGH = 1,
 }
@@ -81,7 +80,7 @@ void IOexpander_put( uint8_t pin_num, IOexpander_pin_output_state_t value );
 /// @brief gets the value of a IO expander input pin
 /// @param pin_num number of the pin 0 to 15 
 /// @param force_update true to update the IO expander via I2C before reading in this function 
-/// @return IOexpander_pin_input_state_t (error if pin is Output pin)
+/// @return IOexpander_pin_input_state_t 
 IOexpander_pin_input_state_t IOexpander_get( uint8_t pin_num, bool force_update );
 
 /// @brief updates the IO expander via I2C (only if changes are done)

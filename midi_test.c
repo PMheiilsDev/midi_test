@@ -48,7 +48,6 @@ uint64_t loop_time_pref = 0;
 
     int input = 0;
     int input_pref = 0;
-    bool state = false;
 
 
 /*------------- MAIN -------------*/
@@ -70,16 +69,8 @@ int main(void)
         input = IOexpander_get(9, true);
         if ( input && !input_pref ) 
         {
-            if ( state )
-            {
-                IOexpander_put(0, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
-                state = false;
-            }
-            else 
-            {
-                IOexpander_put(0, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
-                state = true;
-            }
+            IOexpander_put(0, !IOexpander_get(0, true) );
+            
             IOexpander_write(false);
         }
     }

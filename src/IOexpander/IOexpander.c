@@ -101,10 +101,6 @@ IOexpander_pin_input_state_t IOexpander_get( uint8_t pin_num, bool force_update 
         IOexpander_read();
     }
 
-    if ( IOexpander_get_function( pin_num ) == IO_EXPANDER_PIN_FUNC_OUTPUT )
-    {
-        return IO_EXPANDER_PIN_INPUT_STATE_ERROR;
-    }
 
     bool value = IOexpander_pin_state >> pin_num & 1;
     
