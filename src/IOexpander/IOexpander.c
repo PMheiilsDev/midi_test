@@ -1,6 +1,13 @@
 
 #include "IOexpander.h"
 
+uint16_t IOexpander_pin_func;
+uint16_t IOexpander_pin_func_pref;
+uint16_t IOexpander_pin_state;
+uint16_t IOexpander_pin_state_pref;
+
+
+
 bool IOexpander_init(void)
 {
     i2c_init(I2C_PORT, I2C_SPEED);
@@ -16,18 +23,6 @@ bool IOexpander_init(void)
     {
         return false; 
     }
-    else
-    {
-        while(1)
-        {
-            volatile uint8_t buffer[2];
-            volatile int result = i2c_read_blocking(I2C_PORT, IO_EXPANDER_ADDR, (uint8_t*) buffer, 2, false);
-            if (result == PICO_ERROR_GENERIC) 
-            {
-                return false; 
-            }
-        }
-    }
-
     return true; 
 }
+
