@@ -16,6 +16,9 @@ bool IOexpander_init(void)
     gpio_pull_up(I2C_SDA);
     gpio_pull_up(I2C_SCL);
 
+    IOexpander_pin_func = 0xFFFF;
+    IOexpander_pin_state = 0xFFFF;
+
     // Test if PCF8575 is connected
     uint8_t data[2] = {0xFF, 0xFF};
     int result = i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, 2, false);
