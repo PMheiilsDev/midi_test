@@ -46,6 +46,11 @@ uint ctr = 0;
 uint64_t loop_time = 0;
 uint64_t loop_time_pref = 0;
 
+    int input = 0;
+    int input_pref = 0;
+    bool state = false;
+
+
 /*------------- MAIN -------------*/
 int main(void)
 {
@@ -53,61 +58,33 @@ int main(void)
 
     IOexpander_init();
 
-    // LED should be on 
     IOexpander_set_function(0, IO_EXPANDER_PIN_FUNC_OUTPUT);
-    IOexpander_put(0, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
+    IOexpander_put(0, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
     
-    // LED should be off
-    IOexpander_set_function(1, IO_EXPANDER_PIN_FUNC_OUTPUT);
-    IOexpander_put(1, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
-
-    // LED should be off
-    IOexpander_set_function(2, IO_EXPANDER_PIN_FUNC_INPUT);
-
-    // LED should be off
-    IOexpander_set_function(3, IO_EXPANDER_PIN_FUNC_INPUT);
-    
-    for ( uint i = 4; i < 16; i++ )
-    {
-        IOexpander_set_function(i, IO_EXPANDER_PIN_FUNC_INPUT);
-    }
-    
-    IOexpander_write(true);
-
-    IOexpander_read();
+    IOexpander_set_function(9, IO_EXPANDER_PIN_FUNC_INPUT);
 
     
-    int _0 = IOexpander_get(0, false); 
-    int _1 = IOexpander_get(1, false); 
-    int _2 = IOexpander_get(2, false); 
-    int _3 = IOexpander_get(3, false); 
-
-    printf("%d %d %d %d\n", _0, _1, _2, _3);
-
-    for ( uint i = 0; i < 16; i++ )
+    while( 1 )
     {
-        IOexpander_set_function(i, IO_EXPANDER_PIN_FUNC_OUTPUT);
-        IOexpander_put(i, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
-        IOexpander_write(true);
+        input_pref = input;
+        input = IOexpander_get(9, true);
+        if ( input && !input_pref ) 
+        {
+            if ( state )
+            {
+                IOexpander_put(0, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
+                state = false;
+            }
+            else 
+            {
+                IOexpander_put(0, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
+                state = true;
+            }
+            IOexpander_write(false);
+        }
     }
-    for ( uint i = 0; i < 16; i++ ) 
-    {
-        IOexpander_set_function(i, IO_EXPANDER_PIN_FUNC_OUTPUT);
-        IOexpander_put(i, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
-        IOexpander_write(true);
-    }
-    bool d = false;
-    for ( uint i = 0; i < 16; i++ ) 
-    {
-        IOexpander_set_function(i, IO_EXPANDER_PIN_FUNC_INPUT);
-        d = IOexpander_get( i, true );
-        printf("pin %d is %d\n", i, d);
-    }
-    //IOexpander_set_function(10, IO_EXPANDER_PIN_FUNC_OUTPUT);
-    //IOexpander_put(10, IO_EXPANDER_PIN_OUTPUT_STATE_LOW);
 
-    //IOexpander_write(true);
-
+    
     led_setup();
     adc_setup();
     rot_sw_setup();
