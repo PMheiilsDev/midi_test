@@ -48,7 +48,7 @@ typedef enum
 }
 IOexpander_pin_input_state_t;
 
-/// @brief initializes the IOexpander 
+/// @brief initializes the IOexpander by setting all pins to high z 
 /// @return true if the IOexpander is connected and false if not 
 bool IOexpander_init();
 

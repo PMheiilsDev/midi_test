@@ -17,16 +17,10 @@ bool IOexpander_init(void)
     gpio_pull_up(I2C_SCL);
 
     // Test if PCF8575 is connected
-    uint8_t test_data2[2] = {0xFF, 0xFF};
-    int result = i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, test_data2, 2, false);
-    if (result == PICO_ERROR_GENERIC) 
-    {
-        return false; 
-    }
+    uint8_t data[2] = {0xFF, 0xFF};
+    int result = i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, 2, false);
 
-    //! MISSING turn all pins to high impedance 
-
-    return true; 
+    return (result == PICO_ERROR_GENERIC); 
 }
 
 
@@ -53,17 +47,16 @@ IOexpander_pin_func_t IOexpander_get_function( uint8_t pin_num )
 }
 
 
-
-
-
 bool IOexpander_write( bool force )
 {
     if ( force || ( IOexpander_pin_func != IOexpander_pin_func_pref ) || ( IOexpander_pin_state != IOexpander_pin_state_pref ) )
     {
         // if the pin is input set to 1 or if the pin is highz set to 1 
-        uint16_t data = IOexpander_pin_func | IOexpander_pin_state;
+        uint8_t data [2];
+        data[0] = ( ( IOexpander_pin_func | IOexpander_pin_state ) >> 0 ) & 0xFF;
+        data[1] = ( ( IOexpander_pin_func | IOexpander_pin_state ) >> 8 ) & 0xFF;
 
-        i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, &data, sizeof(data), false);
+        i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, sizeof(data), false);
         
         IOexpander_pin_func_pref = IOexpander_pin_func;
         IOexpander_pin_state_pref = IOexpander_pin_state;
@@ -73,5 +66,26 @@ bool IOexpander_write( bool force )
     return false;
 }
 
+
+bool IOexpander_read()
+{
+    uint8_t data [2];
+    i2c_read_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, sizeof(data), false);
+
+    IOexpander_pin_state = ((data[1] << 8) | data[0]) & ~IOexpander_pin_func;
+
+    return IOexpander_pin_state != IOexpander_pin_state_pref;
+}
+
+
+IOexpander_pin_input_state_t IOexpander_get( uint8_t pin_num, bool force_update )
+{
+    if ( force_update )
+    {
+        IOexpander_read();
+    }
+
+    return ( IOexpander_pin_state >> pin_num ) & 1;
+}
 
 
