@@ -91,7 +91,7 @@ bool IOexpander_write( bool force );
 
 /// @brief updates the input pin values of the IO expander via I2C  
 /// @return true if anything changed 
-bool IOexander_read();
+bool IOexpander_read();
 
 #endif
 
