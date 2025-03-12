@@ -63,6 +63,7 @@ target_sources(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/LED/Digital/led_handler.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/WS2812/ws2812_handler.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/IOexpander/ioexpander.c 
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/IOexpander/ioexpander_handler.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/irq/main_irq_callback.c
         )
 
@@ -75,9 +76,9 @@ target_include_directories(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/ADC/
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/LED/Digital/
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/WS2812/
-        ${CMAKE_CURRENT_LIST_DIR}/src/Outputs/WS2812/generated/
-        ${CMAKE_CURRENT_LIST_DIR}/src/IOexpander/
-        ${CMAKE_CURRENT_LIST_DIR}/src/irq/
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/WS2812/generated/
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/IOexpander/
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/irq/
         )
 
 ## add tinyusb files
