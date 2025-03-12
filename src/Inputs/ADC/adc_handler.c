@@ -33,11 +33,9 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .num_reads = 20
     },
     {
-        .pin = 26,
+        .pin = 27,
         .note = 84,
-        .is_mul_plex = true, 
-        .mul_plex_channel = 3,
-        .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
+        .is_mul_plex = false, 
         .result = 0,
         .result_pref = 0,
         .num_reads = 20
@@ -83,15 +81,15 @@ void adc_task(void)
             //sleep_us(100);
         }
 
-        adc_channels[i].result = adc_sum / adc_channels[i].num_reads;
+         uint16_t result = adc_sum / adc_channels[i].num_reads;
 
-        if (adc_channels[i].result <= 200) 
+        if (result <= 200) 
         {
             adc_channels[i].result = 0;
         }
         else 
         {
-            adc_channels[i].result = ((adc_channels[i].result - 201) * (127 - 60)) / (4095 - 201) + 60 + 1;
+            adc_channels[i].result = ((result - 201) * (127 - 60)) / (4095 - 201) + 60 + 1;
         }
         
         if (adc_channels[i].result_pref != adc_channels[i].result ) 
