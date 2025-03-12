@@ -12,7 +12,7 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .result_pref = 0
     },
     {
-        .pin = 27,
+        .pin = 26,
         .note = 82,
         .is_mul_plex = true, 
         .mul_plex_channel = 1,
@@ -21,7 +21,7 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .result_pref = 0
     },
     {
-        .pin = 28,
+        .pin = 26,
         .note = 83,
         .is_mul_plex = true, 
         .mul_plex_channel = 2,
@@ -30,7 +30,7 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .result_pref = 0
     },
     {
-        .pin = 29,
+        .pin = 26,
         .note = 84,
         .is_mul_plex = true, 
         .mul_plex_channel = 3,
