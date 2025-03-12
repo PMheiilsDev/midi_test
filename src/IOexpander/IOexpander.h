@@ -10,6 +10,8 @@
 #define I2C_SDA 16 
 #define I2C_SCL 17 
 
+#define IO_EXPANDER_INT_PIN 29 
+
 #define IO_EXPANDER_ADDR 0x20 
 
 // for the PCF8575 writing two bytes sets the state of the pins 
@@ -61,6 +63,10 @@ IOexpander_pin_input_state_t;
 /// @brief initializes the IOexpander by setting all pins to high z 
 /// @return true if the IOexpander is connected and false if not 
 bool IOexpander_init();
+
+void IOexpander_task();
+
+void IO_expander_interupt_callback(uint gpio, uint32_t events);
 
 /// @brief sets the function of a ioexpander pin 
 /// @param pin_num number of the pin 0 to 15

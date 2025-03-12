@@ -46,9 +46,6 @@ uint ctr = 0;
 uint64_t loop_time = 0;
 uint64_t loop_time_pref = 0;
 
-    int input = 0;
-    int input_pref = 0;
-
 
 /*------------- MAIN -------------*/
 int main(void)
@@ -57,25 +54,6 @@ int main(void)
 
     IOexpander_init();
 
-    IOexpander_set_function(0, IO_EXPANDER_PIN_FUNC_OUTPUT);
-    IOexpander_put(0, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z);
-    
-    IOexpander_set_function(9, IO_EXPANDER_PIN_FUNC_INPUT);
-
-    
-    while( 1 )
-    {
-        input_pref = input;
-        input = IOexpander_get(9, true);
-        if ( input && !input_pref ) 
-        {
-            IOexpander_put(0, !IOexpander_get(0, true) );
-            
-            IOexpander_write(false);
-        }
-    }
-
-    
     led_setup();
     adc_setup();
     rot_sw_setup();
@@ -104,6 +82,8 @@ int main(void)
         button_task();
         adc_task();
         rot_sw_task();
+
+        IOexpander_task();
     }
 }
 
