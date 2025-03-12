@@ -80,7 +80,8 @@ void sw_interupt_callback(uint gpio, uint32_t events)
     for (int i = 0; i < MAX_ROTARY_SWITCHES; i++) 
     {
         rotary_switch_t *rot_sw = &rotary_switches[i];
-        if (gpio == rot_sw->clk_pin || gpio == rot_sw->data_pin) {
+        if (gpio == rot_sw->clk_pin || gpio == rot_sw->data_pin) 
+        {
             bool clk = gpio_get(rot_sw->clk_pin);
             bool data = gpio_get(rot_sw->data_pin);
 
@@ -97,7 +98,8 @@ void sw_interupt_callback(uint gpio, uint32_t events)
             } 
             else if (events & GPIO_IRQ_EDGE_FALL) 
             {
-                if (gpio == rot_sw->clk_pin) {
+                if (gpio == rot_sw->clk_pin) 
+                {
                     update_counter(rot_sw, data == 1);
                 } 
                 else if (gpio == rot_sw->data_pin) 
@@ -105,6 +107,7 @@ void sw_interupt_callback(uint gpio, uint32_t events)
                     update_counter(rot_sw, clk == 0);
                 }
             }
+            break;
         }
     }
 }
