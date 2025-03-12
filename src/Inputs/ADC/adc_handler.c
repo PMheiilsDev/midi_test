@@ -9,7 +9,8 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .mul_plex_channel = 0,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
-        .result_pref = 0
+        .result_pref = 0,
+        .num_reads = 20
     },
     {
         .pin = 26,
@@ -18,7 +19,8 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .mul_plex_channel = 1,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
-        .result_pref = 0
+        .result_pref = 0,
+        .num_reads = 20
     },
     {
         .pin = 26,
@@ -27,7 +29,8 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .mul_plex_channel = 2,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
-        .result_pref = 0
+        .result_pref = 0,
+        .num_reads = 20
     },
     {
         .pin = 26,
@@ -36,7 +39,8 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .mul_plex_channel = 3,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
-        .result_pref = 0
+        .result_pref = 0,
+        .num_reads = 20
     }
 };
 
@@ -73,13 +77,13 @@ void adc_task(void)
         adc_select_input(gpio_to_adc_channel(adc_channels[i].pin));
 
         uint32_t adc_sum = 0;
-        for (int j = 0; j < NUM_ADC_READS; j++) 
+        for (int j = 0; j < adc_channels[i].num_reads; j++) 
         {
             adc_sum += adc_read();
             //sleep_us(100);
         }
 
-        adc_channels[i].result = adc_sum / NUM_ADC_READS;
+        adc_channels[i].result = adc_sum / adc_channels[i].num_reads;
 
         if (adc_channels[i].result <= 200) 
         {

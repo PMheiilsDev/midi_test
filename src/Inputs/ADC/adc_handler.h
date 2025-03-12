@@ -12,7 +12,6 @@
 #include "tusb.h"
 
 #define MAX_ADC_CHANNELS 4
-#define NUM_ADC_READS 20
 
 #define ADC_MUL_PLEX_GPIO_0 18
 #define ADC_MUL_PLEX_GPIO_1 19 
@@ -26,6 +25,7 @@ typedef struct
     uint8_t mul_plex[3];
     uint16_t result;
     uint16_t result_pref;
+    uint8_t num_reads;
 } 
 adc_channel_t;
 
