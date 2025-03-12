@@ -33,6 +33,8 @@ bool IOexpander_init(void)
         gpio_set_irq_enabled_with_callback(IO_EXPANDER_INT_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &main_interupt_callback);
     }
 
+    IOexpander_set_function( 5, IO_EXPANDER_PIN_FUNC_OUTPUT );
+
     return (result == PICO_ERROR_GENERIC); 
 }
 
@@ -49,12 +51,13 @@ void IO_expander_interupt_callback(uint gpio, uint32_t events)
 
 void IOexpander_task()
 {
+    IOexpander_write(false);
+    
     if ( IOexpander_int )
     {
         IOexpander_read();
         IOexpander_int = false;
     }
-    IOexpander_write(false);
 }
 
 
