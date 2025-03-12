@@ -555,6 +555,12 @@
 		(uuid "28ba4b4d-bfe1-4ec6-8684-e05f690b406b")
 	)
 	(junction
+		(at 250.19 40.64)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "75c55d90-7f44-4526-b040-ef293a1de168")
+	)
+	(junction
 		(at 198.12 38.1)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -584,6 +590,12 @@
 		(color 0 0 0 0)
 		(uuid "b10a50ac-9a7b-4157-8101-c21322ace061")
 	)
+	(junction
+		(at 242.57 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e83c8c36-959f-4852-a0f8-90dcd23580c0")
+	)
 	(wire
 		(pts
 			(xy 222.25 52.07) (xy 222.25 40.64)
@@ -603,6 +615,16 @@
 			(type default)
 		)
 		(uuid "18305c8d-3d9c-4932-929d-49744b924fc2")
+	)
+	(wire
+		(pts
+			(xy 246.38 55.88) (xy 246.38 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2aaf89b3-59fa-49c7-a9ab-9f49bf684de4")
 	)
 	(wire
 		(pts
@@ -626,7 +648,17 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 40.64) (xy 241.3 40.64)
+			(xy 250.19 40.64) (xy 262.89 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3af57314-a0de-457f-aaaf-d935107ffdeb")
+	)
+	(wire
+		(pts
+			(xy 237.49 40.64) (xy 250.19 40.64)
 		)
 		(stroke
 			(width 0)
@@ -756,6 +788,26 @@
 	)
 	(wire
 		(pts
+			(xy 250.19 40.64) (xy 250.19 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8e5ef2e4-d883-4b4e-9e9b-06e1599d0342")
+	)
+	(wire
+		(pts
+			(xy 246.38 82.55) (xy 172.72 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8e8cd67d-edbd-4e83-85a5-de6670afbd0a")
+	)
+	(wire
+		(pts
 			(xy 172.72 74.93) (xy 201.93 74.93)
 		)
 		(stroke
@@ -766,7 +818,7 @@
 	)
 	(wire
 		(pts
-			(xy 229.87 38.1) (xy 241.3 38.1)
+			(xy 229.87 38.1) (xy 242.57 38.1)
 		)
 		(stroke
 			(width 0)
@@ -783,6 +835,16 @@
 			(type default)
 		)
 		(uuid "a5b792de-a254-4b34-a701-2769c99ca8ef")
+	)
+	(wire
+		(pts
+			(xy 242.57 38.1) (xy 242.57 52.07)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa410144-584b-4c25-9bd3-e330d483f8d4")
 	)
 	(wire
 		(pts
@@ -886,6 +948,16 @@
 	)
 	(wire
 		(pts
+			(xy 242.57 38.1) (xy 262.89 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f9bdcd9e-d4fa-4c62-88e6-b1c8103fff9f")
+	)
+	(wire
+		(pts
 			(xy 222.25 40.64) (xy 237.49 40.64)
 		)
 		(stroke
@@ -896,7 +968,7 @@
 	)
 	(global_label "3.3 V"
 		(shape input)
-		(at 241.3 40.64 0)
+		(at 262.89 40.64 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -906,7 +978,7 @@
 		)
 		(uuid "3895b6b6-d120-405a-96b7-fc0dec23300a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 249.3652 40.64 0)
+			(at 270.9552 40.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -984,7 +1056,7 @@
 	)
 	(global_label "GND"
 		(shape input)
-		(at 241.3 38.1 0)
+		(at 262.89 38.1 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -994,7 +1066,7 @@
 		)
 		(uuid "b800707f-bee1-4ff6-b29f-36af9556a0be")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 248.1557 38.1 0)
+			(at 269.7457 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1067,6 +1139,77 @@
 				)
 				(justify right)
 				(hide yes)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Potentiometer")
+		(at 246.38 52.07 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4e10f0ed-d595-45c2-ac7f-469101782eb2")
+		(property "Reference" "R21"
+			(at 246.38 45.72 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 246.38 48.26 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Potentiometer:Linear_Potentiometer"
+			(at 246.38 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 246.38 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Potentiometer"
+			(at 246.38 52.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "43a5abbf-884f-49c8-a1e5-ae8ae4d94c0f")
+		)
+		(pin "1"
+			(uuid "8d1193d5-ce1b-4934-85a7-21419ac77e3f")
+		)
+		(pin "2"
+			(uuid "da8de1fb-7bb9-4e11-ad90-cfb27534b14e")
+		)
+		(instances
+			(project "main_pcb"
+				(path "/b764235d-842d-41df-960a-a32e4258c2ec/f23f292d-bce7-4f3d-8f4f-e415aa1ad861"
+					(reference "R21")
+					(unit 1)
+				)
 			)
 		)
 	)
