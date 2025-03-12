@@ -4,6 +4,8 @@
 #include "hardware/i2c.h"
 #include "hardware/gpio.h"
 
+#include "main_irq_callback.h"
+
 #define I2C_PORT i2c0 
 #define I2C_SPEED 400000 
 

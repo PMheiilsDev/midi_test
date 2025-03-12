@@ -6,6 +6,8 @@
 #include "pico/time.h"
 #include "hardware/gpio.h"
 #include "tusb.h"
+#include "main_irq_callback.h"
+
 
 #define MAX_ROTARY_SWITCHES 4
 

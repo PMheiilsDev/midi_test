@@ -46,6 +46,8 @@ uint ctr = 0;
 uint64_t loop_time = 0;
 uint64_t loop_time_pref = 0;
 
+uint64_t loop_time_res = 0;
+
 
 /*------------- MAIN -------------*/
 int main(void)
@@ -75,6 +77,7 @@ int main(void)
     {
         loop_time_pref = loop_time;
         loop_time = time_us_64();
+        loop_time_res = loop_time-loop_time_pref;
         
         process_midi_message(); 
 

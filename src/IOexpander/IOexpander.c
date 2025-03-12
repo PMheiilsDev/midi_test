@@ -27,10 +27,10 @@ bool IOexpander_init(void)
     {
         gpio_init(IO_EXPANDER_INT_PIN);
         gpio_set_dir(IO_EXPANDER_INT_PIN, GPIO_IN);
-        //gpio_pull_up(rotary_switches[i].clk_pin);
+        gpio_pull_up(IO_EXPANDER_INT_PIN);
 
 
-        gpio_set_irq_enabled_with_callback(IO_EXPANDER_INT_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &IO_expander_interupt_callback);
+        gpio_set_irq_enabled_with_callback(IO_EXPANDER_INT_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &main_interupt_callback);
     }
 
     // debug 
@@ -66,10 +66,10 @@ void IOexpander_task()
 
     // debug
     input_pref = input;
-    input = IOexpander_get(9, true);
+    input = IOexpander_get(9, false);
     if ( input && !input_pref ) 
     {
-        IOexpander_put(0, !IOexpander_get(0, true) );
+        IOexpander_put(0, !IOexpander_get(0, false) );
         
         IOexpander_write(false);
     }

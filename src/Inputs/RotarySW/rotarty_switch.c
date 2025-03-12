@@ -50,8 +50,8 @@ void rot_sw_setup(void)
         gpio_set_dir(rotary_switches[i].data_pin, GPIO_IN);
         gpio_pull_up(rotary_switches[i].data_pin);
 
-        gpio_set_irq_enabled_with_callback(rotary_switches[i].clk_pin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &sw_interupt_callback);
-        gpio_set_irq_enabled_with_callback(rotary_switches[i].data_pin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &sw_interupt_callback);
+        gpio_set_irq_enabled_with_callback(rotary_switches[i].clk_pin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &main_interupt_callback);
+        gpio_set_irq_enabled_with_callback(rotary_switches[i].data_pin, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &main_interupt_callback);
     }
 }
 
