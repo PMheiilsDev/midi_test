@@ -22,6 +22,7 @@
 #include "led_handler.h"
 #include "ws2812_handler.h"
 #include "IOexpander.h"
+#include "IOexpander_handler.h"
 
 #include "pico/time.h"
 
@@ -48,15 +49,12 @@ uint64_t loop_time_pref = 0;
 
 uint64_t loop_time_res = 0;
 
-bool debug = false;
-bool debug_pref = false;
-
 /*------------- MAIN -------------*/
 int main(void)
 {
     ws2812_init();
 
-    IOexpander_init();
+    IO_expander_handler_init();
 
     led_setup();
     adc_setup();
@@ -89,13 +87,7 @@ int main(void)
         rot_sw_task();
 
         IOexpander_task();
-
-        debug_pref = debug;
-        debug = IOexpander_get( 9, false );
-        if ( !debug && debug_pref )
-        {
-            IOexpander_put(5,!IOexpander_get(5, false));
-        }
+        IO_expander_handler_handler();
     }
 }
 
