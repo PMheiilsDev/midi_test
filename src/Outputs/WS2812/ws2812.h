@@ -27,6 +27,6 @@ void ws2812_init();
 
 //void ws2812_set_pixel( uint8_t r, uint8_t g, uint8_t b );
 
-void ws2812_update();
+void ws2812_update(bool wait);
 
 #endif

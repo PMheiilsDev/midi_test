@@ -28,11 +28,13 @@ static void ws2812_set_pixel( uint8_t r, uint8_t g, uint8_t b )
 }
 
 
-void ws2812_update()
+void ws2812_update(bool wait)
 {
     int64_t time_since_last_update = time_us_64() - ws2812_last_update;
     if ( time_since_last_update < WS2812_T_REST )
     {
+        if ( !wait )
+            return; 
         sleep_us( WS2812_T_REST - time_since_last_update );
     }
 

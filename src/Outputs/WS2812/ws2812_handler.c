@@ -53,7 +53,7 @@ void ws2812_setup()
         ws2812_pixels[i].g = 0;
         ws2812_pixels[i].b = 0;
     }
-    ws2812_update();
+    ws2812_update(true);
 }
 
 
@@ -65,7 +65,7 @@ void ws2812_task()
         ws2812_pixels[i].g = *WS_2812[i].value * 255 / WS_2812[i].limit;
         ws2812_pixels[i].b = *WS_2812[i].value * 255 / WS_2812[i].limit;
     }
-    ws2812_update();
+    ws2812_update(false);
 }
 
 
