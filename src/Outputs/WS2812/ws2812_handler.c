@@ -49,27 +49,41 @@ typedef struct {
 } RGB;
 
 
-RGB hsvToRgb(float h, float s, float v) {
+// Convert HSV (Hue, Saturation, Value) to RGB
+RGB hsvToRgb(float h, float s, float v) 
+{
     float c = v * s;
     float x = c * (1 - ((int)(h / 60) % 2 ? h / 60 - (int)(h / 60) : 1 - (h / 60 - (int)(h / 60))));
     float m = v - c;
     float r, g, b;
 
-    if (h < 60) {
+    if (h < 60) 
+    {
         r = c; g = x; b = 0;
-    } else if (h < 120) {
+    } 
+    else if (h < 120) 
+    {
         r = x; g = c; b = 0;
-    } else if (h < 180) {
+    } 
+    else if (h < 180) 
+    {
         r = 0; g = c; b = x;
-    } else if (h < 240) {
+    } 
+    else if (h < 240) 
+    {
         r = 0; g = x; b = c;
-    } else if (h < 300) {
+    } 
+    else if (h < 300) 
+    {
         r = x; g = 0; b = c;
-    } else {
+    } 
+    else 
+    {
         r = c; g = 0; b = x;
     }
 
-    RGB color = {
+    RGB color = 
+    {
         (int)((r + m) * 255),
         (int)((g + m) * 255),
         (int)((b + m) * 255)
@@ -78,12 +92,11 @@ RGB hsvToRgb(float h, float s, float v) {
     return color;
 }
 
-// Convert an index (0-256) to a smooth rainbow RGB color
-RGB indexToRainbowColor(int index) {
-    float hue = ((float)index / 256.0) * 360.0;  // Map index to hue (0-360 degrees)
-    return hsvToRgb(hue, 1.0, 1.0);  // Full saturation & brightness
+RGB indexToCustomRainbow(int index) 
+{
+    float hue = 240.0 - ((float)index / 256.0) * (240.0 - 0.0); 
+    return hsvToRgb(hue, 1.0, 1.0);  
 }
-
 
 void ws2812_setup()
 {
@@ -103,11 +116,11 @@ void ws2812_task()
 {
     for( uint i = 0; i < WS2812_AMT; i++ )
     {
-        RGB rgb = indexToRainbowColor(*WS_2812[i].value * 255 / WS_2812[i].limit);
+        RGB rgb = indexToCustomRainbow(*WS_2812[i].value * 255 / WS_2812[i].limit);
 
-        ws2812_pixels[i].r = rgb.r;
-        ws2812_pixels[i].g = rgb.g;
-        ws2812_pixels[i].b = rgb.b;
+        ws2812_pixels[i].r = rgb.r>>4;
+        ws2812_pixels[i].g = rgb.g>>4;
+        ws2812_pixels[i].b = rgb.b>>4;
     }
     ws2812_update(false);
 }
