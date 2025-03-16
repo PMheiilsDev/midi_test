@@ -83,14 +83,15 @@ void adc_task(void)
 
          uint16_t result = adc_sum / adc_channels[i].num_reads;
 
-        if (result <= 200) 
-        {
-            adc_channels[i].result = 0;
-        }
-        else 
-        {
-            adc_channels[i].result = ((result - 201) * (127 - 60)) / (4095 - 201) + 60 + 1;
-        }
+        adc_channels[i].result = result * 128 / 4095;
+        //if (result <= 200) 
+        //{
+        //    adc_channels[i].result = 0;
+        //}
+        //else 
+        //{
+        //    adc_channels[i].result = ((result - 201) * (127 - 60)) / (4095 - 201) + 60 + 1;
+        //}
         
         if (adc_channels[i].result_pref != adc_channels[i].result ) 
         {
