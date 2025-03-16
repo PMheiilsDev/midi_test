@@ -61,7 +61,7 @@ target_sources(midi_test PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/RotarySW/rotarty_switch.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Inputs/ADC/adc_handler.c
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/LED/Digital/led_handler.c
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/WS2812/ws2812_handler.c 
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Outputs/WS2812/ws2812.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/IOexpander/ioexpander.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/IOexpander/ioexpander_handler.c 
         ${CMAKE_CURRENT_SOURCE_DIR}/src/irq/main_irq_callback.c

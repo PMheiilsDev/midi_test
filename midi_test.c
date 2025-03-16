@@ -20,7 +20,7 @@
 #include "midi_handler.h"
 #include "adc_handler.h"
 #include "led_handler.h"
-#include "ws2812_handler.h"
+#include "ws2812.h"
 #include "IOexpander.h"
 #include "IOexpander_handler.h"
 
