@@ -5,7 +5,7 @@
 
 #define WS2812_PIN 7 
 
-#define WS2812_AMT 5 
+#define WS2812_AMT 8
 
 // never got an error when using 110 us 
 // some datasheets say 50 us (100 us gives errors), some say 280 us
@@ -21,6 +21,7 @@ typedef struct
 } 
 ws2812_pixel_t;
 
+extern ws2812_pixel_t ws2812_pixels[WS2812_AMT];
 
 void ws2812_init(); 
 

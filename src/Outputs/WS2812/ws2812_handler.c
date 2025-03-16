@@ -43,3 +43,29 @@ WS_2812_t WS_2812[WS2812_AMT] =
 };
 
 
+void ws2812_setup()
+{
+    ws2812_init();
+
+    for( uint i = 0; i < WS2812_AMT; i++ )
+    {
+        ws2812_pixels[i].r = 0;
+        ws2812_pixels[i].g = 0;
+        ws2812_pixels[i].b = 0;
+    }
+    ws2812_update();
+}
+
+
+void ws2812_task()
+{
+    for( uint i = 0; i < WS2812_AMT; i++ )
+    {
+        ws2812_pixels[i].r = *WS_2812[i].value * 255 / WS_2812[i].limit;
+        ws2812_pixels[i].g = *WS_2812[i].value * 255 / WS_2812[i].limit;
+        ws2812_pixels[i].b = *WS_2812[i].value * 255 / WS_2812[i].limit;
+    }
+    ws2812_update();
+}
+
+

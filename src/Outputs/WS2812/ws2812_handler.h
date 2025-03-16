@@ -15,4 +15,9 @@ WS_2812_t;
 
 extern WS_2812_t WS_2812[WS2812_AMT];
 
+void ws2812_setup();
+
+void ws2812_task();
+
+
 #endif

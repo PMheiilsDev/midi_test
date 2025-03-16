@@ -21,6 +21,7 @@
 #include "adc_handler.h"
 #include "led_handler.h"
 #include "ws2812.h"
+#include "ws2812_handler.h"
 #include "IOexpander.h"
 #include "IOexpander_handler.h"
 
@@ -52,7 +53,7 @@ uint64_t loop_time_res = 0;
 /*------------- MAIN -------------*/
 int main(void)
 {
-    ws2812_init();
+    ws2812_setup();
 
     IO_expander_handler_init();
 
@@ -85,6 +86,7 @@ int main(void)
         button_task();
         adc_task();
         rot_sw_task();
+        ws2812_task();
 
         IOexpander_task();
         IO_expander_handler_handler();
