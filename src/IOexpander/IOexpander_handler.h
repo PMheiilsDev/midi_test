@@ -4,7 +4,7 @@
 #include "IOexpander.h" 
 
 
-#define IO_EXPANDER_MIDI_ELEMENT_AMT 2
+#define IO_EXPANDER_MIDI_ELEMENT_AMT 8
  
 typedef struct 
 {
