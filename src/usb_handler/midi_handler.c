@@ -4,6 +4,7 @@
 char* buffer;
 uint64_t buffer_counter = 0;
 
+uint8_t buffer_int = 0;
 
 
 void process_midi_message(void) 
@@ -22,33 +23,37 @@ void process_midi_message(void)
         switch (command) 
         {
             case 0x80: // Note Off
-                sprintf( buffer+128*buffer_counter, "Note Off: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
+                //sprintf( buffer+128*buffer_counter, "Note Off: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
             break;
 
             case 0x90: // Note On (check for velocity > 0)
-                sprintf( buffer+128*buffer_counter, "Note On: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
+                //sprintf( buffer+128*buffer_counter, "Note On: Note = %d, Velocity = %d, Channel = %d\n", data1, data2, channel);
             break;
 
             case 0xA0: // Aftertouch (Polyphonic Pressure)
-                sprintf( buffer+128*buffer_counter,  "Poly Aftertouch: Note = %d, Pressure = %d, Channel = %d\n", data1, data2, channel);
+                //sprintf( buffer+128*buffer_counter,  "Poly Aftertouch: Note = %d, Pressure = %d, Channel = %d\n", data1, data2, channel);
             break;
 
             case 0xB0: // Control Change
-                sprintf( buffer+128*buffer_counter, "Control Change: Controller = %d, Value = %d, Channel = %d\n", data1, data2, channel);
+                sprintf( buffer+32*buffer_counter, "%d, %d, %d", data1, data2, channel);
+                if ( data1 == 85 )
+                {
+                    buffer_int = data2;
+                }
             break;
 
             case 0xC0: // Program Change (Only 1 data byte)
-                sprintf( buffer+128*buffer_counter, "Program Change: Program = %d, Channel = %d\n", data1, channel);
+                //sprintf( buffer+128*buffer_counter, "Program Change: Program = %d, Channel = %d\n", data1, channel);
             break;
 
             case 0xD0: // Channel Aftertouch (Channel Pressure)
-                sprintf( buffer+128*buffer_counter, "Channel Aftertouch: Pressure = %d, Channel = %d\n", data1, channel);
+                //sprintf( buffer+128*buffer_counter, "Channel Aftertouch: Pressure = %d, Channel = %d\n", data1, channel);
             break;
 
             case 0xE0: // Pitch Bend Change
             {
                 int16_t bend_value = ((data2 << 7) | data1) - 8192; // 14-bit signed
-                sprintf( buffer+128*buffer_counter, "Pitch Bend: Value = %d, Channel = %d\n", bend_value, channel);
+                //sprintf( buffer+128*buffer_counter, "Pitch Bend: Value = %d, Channel = %d\n", bend_value, channel);
             }
             break;
 
