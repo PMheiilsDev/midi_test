@@ -1,6 +1,6 @@
 #include "adc_handler.h"
 
-adc_channel_t adc_channels[MAX_ADC_CHANNELS] = 
+adc_channel_t adc_channels[MAX_ADC_CHANNELS];/* = 
 {
     {
         .pin = 26,
@@ -40,7 +40,7 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .result_pref = 0,
         .num_reads = 20
     }
-};
+};*/
 
 void adc_setup(void)
 {

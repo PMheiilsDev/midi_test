@@ -11,7 +11,7 @@
 #include "hardware/pwm.h"
 #include "tusb.h"
 
-#define MAX_ADC_CHANNELS 4
+#define MAX_ADC_CHANNELS 0
 
 #define ADC_MUL_PLEX_GPIO_0 18
 #define ADC_MUL_PLEX_GPIO_1 19 
