@@ -11,7 +11,8 @@
 #include "hardware/pwm.h"
 #include "tusb.h"
 
-#define MAX_ADC_CHANNELS 0
+#define MAX_ADC_CHANNELS 4
+#define ADC_MUL_LAST_REF_AMT 8
 
 #define ADC_MUL_PLEX_GPIO_0 18
 #define ADC_MUL_PLEX_GPIO_1 19 
@@ -24,7 +25,8 @@ typedef struct
     uint8_t is_mul_plex: 1, mul_plex_channel : 3; // assuming that the multiplexer has 3 pins for channel selection 
     uint8_t mul_plex[3];
     volatile uint8_t result;                   // change that to a uint8_t 
-    volatile uint8_t result_pref;
+    uint8_t result_pref_ctr : 3;
+    volatile uint8_t result_pref[ADC_MUL_LAST_REF_AMT];
     uint8_t num_reads;
 } 
 adc_channel_t;

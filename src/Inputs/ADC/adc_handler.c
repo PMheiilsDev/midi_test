@@ -1,6 +1,6 @@
 #include "adc_handler.h"
 
-adc_channel_t adc_channels[MAX_ADC_CHANNELS];/* = 
+adc_channel_t adc_channels[MAX_ADC_CHANNELS] = 
 {
     {
         .pin = 26,
@@ -9,7 +9,6 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS];/* =
         .mul_plex_channel = 0,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
-        .result_pref = 0,
         .num_reads = 20
     },
     {
@@ -19,7 +18,6 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS];/* =
         .mul_plex_channel = 1,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
-        .result_pref = 0,
         .num_reads = 20
     },
     {
@@ -29,7 +27,6 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS];/* =
         .mul_plex_channel = 2,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
-        .result_pref = 0,
         .num_reads = 20
     },
     {
@@ -37,10 +34,9 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS];/* =
         .note = 84,
         .is_mul_plex = false, 
         .result = 0,
-        .result_pref = 0,
         .num_reads = 20
     }
-};*/
+};
 
 void adc_setup(void)
 {
@@ -59,6 +55,8 @@ void adc_setup(void)
                 gpio_set_dir(adc_channels[i].mul_plex[j], GPIO_OUT);
             }
         }
+
+        memset(adc_channels[i].result_pref, 0, sizeof(adc_channels[i].result_pref));
     }
 }
 
@@ -92,10 +90,11 @@ void adc_task(void)
         //{
         //    adc_channels[i].result = ((result - 201) * (127 - 60)) / (4095 - 201) + 60 + 1;
         //}
-        
-        if (adc_channels[i].result_pref != adc_channels[i].result ) 
+        if ( !memchr(adc_channels[i].result_pref, adc_channels[i].result, sizeof(adc_channels[i].result_pref) ) )
         {
-            adc_channels[i].result_pref = adc_channels[i].result;
+            adc_channels[i].result_pref[adc_channels[i].result_pref_ctr] = adc_channels[i].result;
+            adc_channels[i].result_pref_ctr++;
+
             uint8_t note_on[3] = {0b10110000 | 0, adc_channels[i].note, adc_channels[i].result};
             tud_midi_stream_write(0, note_on, 3);
         }
