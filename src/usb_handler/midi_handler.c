@@ -38,6 +38,10 @@ void process_midi_message(void)
                 sprintf( buffer+32*buffer_counter, "%d, %d, %d", data1, data2, channel);
                 if ( data1 == 85 )
                 {
+                    //buffer_int = data2;
+                }
+                else if ( data1 == 10 )
+                {
                     buffer_int = data2;
                 }
             break;
