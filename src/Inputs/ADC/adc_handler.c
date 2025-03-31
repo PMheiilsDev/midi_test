@@ -74,9 +74,42 @@ static uint8_t val_in_array( uint8_t *arr, uint8_t val, uint8_t size )
     }
     return ctr;
 }
+uint8_t find_min(const uint8_t *arr, size_t size) 
+{
+    if (size == 0) 
+    {
+        return 0;  // Handle empty array case (optional, depends on use case)
+    }
+
+    uint8_t min_value = arr[0];  // Assume first element is the smallest
+
+    for (size_t i = 1; i < size; i++) 
+    {
+        if (arr[i] < min_value) 
+        {
+            min_value = arr[i];
+        }
+    }
+
+    return min_value;
+}
+uint8_t find_average(const uint8_t *arr, size_t size) {
+    if (size == 0) {
+        return 0.0;  // Handle empty array case
+    }
+
+    uint32_t sum = 0;  // Use uint32_t to prevent overflow
+
+    for (size_t i = 0; i < size; i++) {
+        sum += arr[i];
+    }
+
+    return sum / size;
+}
 uint8_t debug_out = 0;
 void adc_task(void)
 {
+    /// NOTE: all this is bull shit just check if the 4096 (12 bit value is changed by a bit less than (1>>7)<<12) [[maybe half ???]] 
 
     for (int i = 0; i < MAX_ADC_CHANNELS; i++) 
     {
@@ -94,23 +127,20 @@ void adc_task(void)
             //sleep_us(100);
         }
 
-         uint16_t result = adc_sum / adc_channels[i].num_reads;
+        uint16_t result = adc_sum / adc_channels[i].num_reads;
 
-        adc_channels[i].result = result * 128 / 4095;
-        //if (result <= 200) 
-        //{
-        //    adc_channels[i].result = 0;
-        //}
-        //else 
-        //{
-        //    adc_channels[i].result = ((result - 201) * (127 - 60)) / (4095 - 201) + 60 + 1;
-        //}
-        if ( !memchr(adc_channels[i].result_pref, adc_channels[i].result, sizeof(adc_channels[i].result_pref) ) )
+        adc_channels[i].result_pref[adc_channels[i].result_pref_ctr] = result * 128 / 4095;
+        // adc_channels[i].result_pref[adc_channels[i].result_pref_ctr] = 100 + rand()%2;
+        
+        adc_channels[i].result_pref_ctr++;
+
+        adc_channels[i].result = find_average(adc_channels[i].result_pref, sizeof(adc_channels[i].result_pref));
+
+        if ( adc_channels[i].result_pref_send != adc_channels[i].result ) 
         {
-            adc_channels[i].result_pref[adc_channels[i].result_pref_ctr] = adc_channels[i].result;
-            adc_channels[i].result_pref_ctr++;
+            adc_channels[i].result_pref_send = adc_channels[i].result;
 
-            uint8_t note_on[3] = {0b10110000 | 0, adc_channels[i].note, adc_channels[i].result};
+            uint8_t note_on[3] = {0b10110000 | 0, adc_channels[i].note, adc_channels[i].result }; 
             tud_midi_stream_write(0, note_on, 3);
         }
     }
