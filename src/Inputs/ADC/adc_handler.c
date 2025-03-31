@@ -1,5 +1,7 @@
 #include "adc_handler.h"
 
+#include <stdlib.h>
+
 adc_channel_t adc_channels[MAX_ADC_CHANNELS] = 
 {
     {
@@ -60,6 +62,19 @@ void adc_setup(void)
     }
 }
 
+static uint8_t val_in_array( uint8_t *arr, uint8_t val, uint8_t size )
+{
+    uint8_t ctr = 0;
+    for ( int i = 0; i < size; i++ ) 
+    {
+        if ( arr[i] == val ) 
+        {
+            ctr++;
+        }
+    }
+    return ctr;
+}
+uint8_t debug_out = 0;
 void adc_task(void)
 {
 
