@@ -25,10 +25,9 @@ typedef struct
     uint8_t note;
     uint8_t is_mul_plex: 1, mul_plex_channel : 3; // assuming that the multiplexer has 3 pins for channel selection 
     uint8_t mul_plex[3];
-    volatile uint8_t result;                   // change that to a uint8_t 
-    uint8_t result_pref_send; 
-    uint8_t result_pref_ctr : ADC_MUL_LAST_REF_AMT_BITS;
-    volatile uint8_t result_pref[ADC_MUL_LAST_REF_AMT];
+    uint16_t result;
+    uint16_t result_pref; 
+    uint8_t res_7_bit;
     uint8_t num_reads;
 } 
 adc_channel_t;

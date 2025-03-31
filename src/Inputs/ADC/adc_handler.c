@@ -57,8 +57,8 @@ void adc_setup(void)
                 gpio_set_dir(adc_channels[i].mul_plex[j], GPIO_OUT);
             }
         }
-
-        memset(adc_channels[i].result_pref, 0, sizeof(adc_channels[i].result_pref));
+        adc_channels[i].result_pref = 0;
+        //memset(adc_channels[i].result_pref, 0, sizeof(adc_channels[i].result_pref));
     }
 }
 
@@ -74,39 +74,7 @@ static uint8_t val_in_array( uint8_t *arr, uint8_t val, uint8_t size )
     }
     return ctr;
 }
-uint8_t find_min(const uint8_t *arr, size_t size) 
-{
-    if (size == 0) 
-    {
-        return 0;  // Handle empty array case (optional, depends on use case)
-    }
 
-    uint8_t min_value = arr[0];  // Assume first element is the smallest
-
-    for (size_t i = 1; i < size; i++) 
-    {
-        if (arr[i] < min_value) 
-        {
-            min_value = arr[i];
-        }
-    }
-
-    return min_value;
-}
-uint8_t find_average(const uint8_t *arr, size_t size) {
-    if (size == 0) {
-        return 0.0;  // Handle empty array case
-    }
-
-    uint32_t sum = 0;  // Use uint32_t to prevent overflow
-
-    for (size_t i = 0; i < size; i++) {
-        sum += arr[i];
-    }
-
-    return sum / size;
-}
-uint8_t debug_out = 0;
 void adc_task(void)
 {
     /// NOTE: all this is bull shit just check if the 4096 (12 bit value is changed by a bit less than (1>>7)<<12) [[maybe half ???]] 
@@ -127,20 +95,14 @@ void adc_task(void)
             //sleep_us(100);
         }
 
-        uint16_t result = adc_sum / adc_channels[i].num_reads;
+        adc_channels[i].result = adc_sum/adc_channels[i].num_reads;
 
-        adc_channels[i].result_pref[adc_channels[i].result_pref_ctr] = result * 128 / 4095;
-        // adc_channels[i].result_pref[adc_channels[i].result_pref_ctr] = 100 + rand()%2;
-        
-        adc_channels[i].result_pref_ctr++;
-
-        adc_channels[i].result = find_average(adc_channels[i].result_pref, sizeof(adc_channels[i].result_pref));
-
-        if ( adc_channels[i].result_pref_send != adc_channels[i].result ) 
+        if ( abs(adc_channels[i].result_pref - adc_channels[i].result) >= (1<<(12-7))/4 ) // the /4 is there so that at the edges it alway reaches 127 / 0 and does not stop one before that 
         {
-            adc_channels[i].result_pref_send = adc_channels[i].result;
+            adc_channels[i].result_pref = adc_channels[i].result;
+            adc_channels[i].res_7_bit = adc_channels[i].result>>(12-7);
 
-            uint8_t note_on[3] = {0b10110000 | 0, adc_channels[i].note, adc_channels[i].result }; 
+            uint8_t note_on[3] = {0b10110000 | 0, adc_channels[i].note, adc_channels[i].res_7_bit }; 
             tud_midi_stream_write(0, note_on, 3);
         }
     }
