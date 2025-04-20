@@ -100,7 +100,7 @@
 			)
 		)
 	)
-	(pad "0" thru_hole oval
+	(pad "" thru_hole oval
 		(at -4.75 6.25 180)
 		(size 1.6 2.6)
 		(drill oval 0.6 1.6)
@@ -108,7 +108,7 @@
 		(remove_unused_layers no)
 		(uuid "1e36a8af-9c0d-4099-b014-a6f3bdcb0126")
 	)
-	(pad "0" thru_hole oval
+	(pad "" thru_hole oval
 		(at -4.75 69.25 180)
 		(size 1.6 2.6)
 		(drill oval 0.6 1.6)
@@ -116,7 +116,7 @@
 		(remove_unused_layers no)
 		(uuid "e91f07df-1f5a-4498-a2ac-45eadf4dc17a")
 	)
-	(pad "0" thru_hole oval
+	(pad "" thru_hole oval
 		(at 4.25 6.25 180)
 		(size 1.6 2.6)
 		(drill oval 0.6 1.6)
@@ -124,7 +124,7 @@
 		(remove_unused_layers no)
 		(uuid "25eb751f-f9f3-422e-806a-c488b5ec1a6e")
 	)
-	(pad "0" thru_hole oval
+	(pad "" thru_hole oval
 		(at 4.25 69.25 180)
 		(size 1.6 2.6)
 		(drill oval 0.6 1.6)
