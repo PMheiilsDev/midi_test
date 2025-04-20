@@ -2719,7 +2719,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DIP:SMDIP-16_W9.53mm"
+		(property "Footprint" "Package_DIP:DIP-16_W7.62mm"
 			(at 86.36 60.96 0)
 			(effects
 				(font
@@ -3889,7 +3889,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DIP:SMDIP-16_W9.53mm"
+		(property "Footprint" "Package_DIP:DIP-16_W7.62mm"
 			(at 73.66 125.73 0)
 			(effects
 				(font

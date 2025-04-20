@@ -1312,7 +1312,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_DIP:SMDIP-16_W9.53mm"
+		(property "Footprint" "Package_DIP:DIP-16_W7.62mm"
 			(at 162.56 90.17 0)
 			(effects
 				(font
