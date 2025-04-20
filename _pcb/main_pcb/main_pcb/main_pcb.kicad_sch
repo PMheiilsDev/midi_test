@@ -2002,7 +2002,7 @@
 	)
 	(global_label "ADC_MUL_PLEX_GPIO_2"
 		(shape input)
-		(at 121.92 142.24 0)
+		(at 121.92 147.32 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -2012,7 +2012,7 @@
 		)
 		(uuid "80e47cd1-d4a4-4833-9d12-cc44074f0bd2")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 146.5556 142.24 0)
+			(at 146.5556 147.32 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2046,7 +2046,7 @@
 	)
 	(global_label "ADC_MUL_PLEX_GPIO_0"
 		(shape input)
-		(at 121.92 147.32 0)
+		(at 121.92 142.24 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -2056,7 +2056,7 @@
 		)
 		(uuid "84442713-621a-4053-b7d1-23d8f2f5615e")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 146.5556 147.32 0)
+			(at 146.5556 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
