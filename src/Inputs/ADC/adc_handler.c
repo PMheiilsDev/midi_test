@@ -6,9 +6,18 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
 {
     {
         .pin = 26,
+        .note = 80,
+        .is_mul_plex = true, 
+        .mul_plex_channel = 3,
+        .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
+        .result = 0,
+        .num_reads = 20
+    },
+    {
+        .pin = 26,
         .note = 81,
         .is_mul_plex = true, 
-        .mul_plex_channel = 0,
+        .mul_plex_channel = 4,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
         .num_reads = 20
@@ -17,7 +26,7 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .pin = 26,
         .note = 82,
         .is_mul_plex = true, 
-        .mul_plex_channel = 1,
+        .mul_plex_channel = 5,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
         .num_reads = 20
@@ -26,15 +35,17 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
         .pin = 26,
         .note = 83,
         .is_mul_plex = true, 
-        .mul_plex_channel = 2,
+        .mul_plex_channel = 6,
         .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
         .num_reads = 20
     },
     {
-        .pin = 27,
+        .pin = 26,
         .note = 84,
-        .is_mul_plex = false, 
+        .is_mul_plex = true, 
+        .mul_plex_channel = 7,
+        .mul_plex = {ADC_MUL_PLEX_GPIO_0, ADC_MUL_PLEX_GPIO_1, ADC_MUL_PLEX_GPIO_2},
         .result = 0,
         .num_reads = 20
     }

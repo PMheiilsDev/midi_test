@@ -11,7 +11,7 @@
 #include "hardware/pwm.h"
 #include "tusb.h"
 
-#define MAX_ADC_CHANNELS 4
+#define MAX_ADC_CHANNELS 5
 #define ADC_MUL_LAST_REF_AMT_BITS 4
 #define ADC_MUL_LAST_REF_AMT (1 << ADC_MUL_LAST_REF_AMT_BITS) 
 
