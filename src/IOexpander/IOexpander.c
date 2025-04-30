@@ -21,9 +21,10 @@ bool IOexpander_init(void)
 
     // Test if PCF8575 is connected
     uint8_t data[2] = {0xFF, 0xFF};
-    int result = i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, 2, false);
+    int result_0 = i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR_0, &data[0], 1, false);
+    int result_1 = i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR_1, &data[1], 1, false);
 
-    if ( (result != PICO_ERROR_GENERIC) )
+    if ( (result_0 != PICO_ERROR_GENERIC) && (result_1 != PICO_ERROR_GENERIC) )
     {
         gpio_init(IO_EXPANDER_INT_PIN);
         gpio_set_dir(IO_EXPANDER_INT_PIN, GPIO_IN);
@@ -33,9 +34,9 @@ bool IOexpander_init(void)
         gpio_set_irq_enabled_with_callback(IO_EXPANDER_INT_PIN, GPIO_IRQ_EDGE_RISE | GPIO_IRQ_EDGE_FALL, true, &main_interupt_callback);
     }
 
-    IOexpander_set_function( 5, IO_EXPANDER_PIN_FUNC_OUTPUT );
+    // IOexpander_set_function( 5, IO_EXPANDER_PIN_FUNC_OUTPUT );
 
-    return (result == PICO_ERROR_GENERIC); 
+    return ((result_0 != PICO_ERROR_GENERIC) && (result_1 != PICO_ERROR_GENERIC)); 
 }
 
 
@@ -98,7 +99,8 @@ bool IOexpander_write( bool force )
         data[0] = ( ( IOexpander_pin_func | (~IOexpander_pin_func & IOexpander_pin_state) ) >> 0 ) & 0xFF;
         data[1] = ( ( IOexpander_pin_func | (~IOexpander_pin_func & IOexpander_pin_state) ) >> 8 ) & 0xFF;
 
-        i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, sizeof(data), false);
+        i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR_0, &data[0], 1, false);
+        i2c_write_blocking(I2C_PORT, IO_EXPANDER_ADDR_1, &data[1], 1, false);
         
         IOexpander_pin_func_pref = IOexpander_pin_func;
         IOexpander_pin_state_pref = IOexpander_pin_state;
@@ -112,7 +114,8 @@ bool IOexpander_write( bool force )
 bool IOexpander_read()
 {
     uint8_t data [2];
-    i2c_read_blocking(I2C_PORT, IO_EXPANDER_ADDR, data, sizeof(data), false);
+    i2c_read_blocking(I2C_PORT, IO_EXPANDER_ADDR_0, &data[0], 1, false);
+    i2c_read_blocking(I2C_PORT, IO_EXPANDER_ADDR_1, &data[1], 1, false);
 
     IOexpander_pin_state = ((data[1] << 8) | data[0]) /*& IOexpander_pin_func*/;
 

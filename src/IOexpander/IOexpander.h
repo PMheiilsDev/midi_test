@@ -14,7 +14,8 @@
 
 #define IO_EXPANDER_INT_PIN 29 
 
-#define IO_EXPANDER_ADDR 0x20 
+#define IO_EXPANDER_ADDR_0 0x20 
+#define IO_EXPANDER_ADDR_1 0x21
 
 // for the PCF8575 writing two bytes sets the state of the pins 
 // if a pin is 0 then the  pins connects to GND with a small resistance
