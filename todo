@@ -12,6 +12,22 @@ divide in:
 
 
 
+change midi handler to have 3 types of midi element (button,adc,rotsw)
+sort all the midi elements and give them a note in order 
+button
+  each is on the io expander 
+  each has one button pin and one led pin 
+  create a function that can be used to connect(find out) a button pin and a led pin 
+    pull pins to low after each other wait 5s 
+    if int is changed if only one pin was changed connect that pin and the led pin in a button midi element 
+  each button is of type control change and can be changed via software
+
+rot sw 
+  can be changed by software
+  has a button connected to it that changes to 0dB (64)
+  
+adc 
+  can not be changed by software
 
 
 Info about midi feedback about the sliders it seams like the position of the slider in software can not be sent by voicemeeter (wait for email responce)
