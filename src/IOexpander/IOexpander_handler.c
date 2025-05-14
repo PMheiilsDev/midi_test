@@ -4,57 +4,57 @@
 IO_exp_midi_element_t IO_exp_midi_element[IO_EXPANDER_MIDI_ELEMENT_AMT] =
 {
     {
-        .input_pin = 0,
-        .output_pin = 5,
+        .input_pin = 1,
+        .output_pin = 1,
         .note = 10,
         .state = 0,
         .state_pref = 0
     },
     {
-        .input_pin = 1,
-        .output_pin = 7,
+        .input_pin = 3,
+        .output_pin = 2,
         .note = 11,
         .state = 0,
         .state_pref = 0
     },
     {
-        .input_pin = 2,
-        .output_pin = 5,
+        .input_pin = 6,
+        .output_pin = 4,
         .note = 12,
         .state = 0,
         .state_pref = 0
     },
     {
-        .input_pin = 3,
+        .input_pin = 7,
         .output_pin = 5,
         .note = 13,
         .state = 0,
         .state_pref = 0
     },
     {
-        .input_pin = 4,
-        .output_pin = 6,
+        .input_pin = 8,
+        .output_pin = 9,
         .note = 14,
         .state = 0,
         .state_pref = 0
     },
     {
-        .input_pin = 5,
-        .output_pin = 7,
+        .input_pin = 10,
+        .output_pin = 11,
         .note = 15,
         .state = 0,
         .state_pref = 0
     },
     {
-        .input_pin = 6,
-        .output_pin = 5,
+        .input_pin = 12,
+        .output_pin = 13,
         .note = 16,
         .state = 0,
         .state_pref = 0
     },
     {
-        .input_pin = 7,
-        .output_pin = 6,
+        .input_pin = 14,
+        .output_pin = 15,
         .note = 17,
         .state = 0,
         .state_pref = 0
