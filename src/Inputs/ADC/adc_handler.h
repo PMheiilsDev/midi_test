@@ -15,9 +15,9 @@
 #define ADC_MUL_LAST_REF_AMT_BITS 4
 #define ADC_MUL_LAST_REF_AMT (1 << ADC_MUL_LAST_REF_AMT_BITS) 
 
-#define ADC_MUL_PLEX_GPIO_0 18
-#define ADC_MUL_PLEX_GPIO_1 19 
-#define ADC_MUL_PLEX_GPIO_2 20
+#define ADC_MUL_PLEX_GPIO_0 21
+#define ADC_MUL_PLEX_GPIO_1 20
+#define ADC_MUL_PLEX_GPIO_2 19
 
 typedef struct 
 {

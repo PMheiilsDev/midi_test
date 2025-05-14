@@ -9,10 +9,10 @@
 #define I2C_PORT i2c0 
 #define I2C_SPEED 400000 
 
-#define I2C_SDA 16 
-#define I2C_SCL 17 
+#define I2C_SDA 0
+#define I2C_SCL 1 
 
-#define IO_EXPANDER_INT_PIN 29 
+#define IO_EXPANDER_INT_PIN 11
 
 #define IO_EXPANDER_ADDR_0 0x20 
 #define IO_EXPANDER_ADDR_1 0x21

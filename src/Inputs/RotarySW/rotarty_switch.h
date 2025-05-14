@@ -9,7 +9,7 @@
 #include "main_irq_callback.h"
 
 
-#define MAX_ROTARY_SWITCHES 4
+#define MAX_ROTARY_SWITCHES 3
 
 typedef struct 
 {

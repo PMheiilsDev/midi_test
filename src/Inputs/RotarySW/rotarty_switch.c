@@ -15,23 +15,16 @@ rotary_switch_t rotary_switches[MAX_ROTARY_SWITCHES] =
         .last_sent = 0
     },
     {
-        .clk_pin =  4,
-        .data_pin =  5,
+        .clk_pin =  5,
+        .data_pin =  6,
         .note = 83,
         .counter = 0,
         .last_sent = 0
     },
     {
-        .clk_pin =  10,
-        .data_pin =  11,
+        .clk_pin =  8,
+        .data_pin =  9,
         .note = 84,
-        .counter = 0,
-        .last_sent = 0
-    },
-    {
-        .clk_pin =  14,
-        .data_pin =  15,
-        .note = 85,
         .counter = 0,
         .last_sent = 0
     }

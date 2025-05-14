@@ -3,7 +3,7 @@
 
 #include "ws2812.pio.h"
 
-#define WS2812_PIN 7 
+#define WS2812_PIN 22
 
 #define WS2812_AMT 8
 
