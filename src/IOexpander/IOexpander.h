@@ -104,10 +104,6 @@ bool IOexpander_read();
 /// @brief this is a debug function that is only planed to be used once to test for wiring 
 void IOexpander_get_pin_types();
 
-// temp
-
-int get_single_set_bit_index(uint16_t x) ;
-
 
 #endif
 
