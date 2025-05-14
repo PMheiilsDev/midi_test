@@ -89,7 +89,7 @@ int main(void)
         ws2812_task();
 
         IOexpander_task();
-        IO_expander_handler_handler();
+        //IO_expander_handler_handler();
     }
 }
 

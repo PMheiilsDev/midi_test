@@ -130,22 +130,6 @@ void IO_expander_handler_init()
         IOexpander_set_function( IO_exp_midi_element[i].input_pin, IO_EXPANDER_PIN_FUNC_OUTPUT );
         IOexpander_put( IO_exp_midi_element[i].input_pin, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z );
     }
-    while(1)
-    {
-        for( uint i = 0; i < IO_EXPANDER_MIDI_ELEMENT_AMT; i++ )
-        {
-            IOexpander_put( IO_exp_midi_element[i].input_pin, IO_EXPANDER_PIN_OUTPUT_STATE_HIGH_Z );
-        }
-        IOexpander_write(true);
-        sleep_ms(1000);
-        
-        for( uint i = 0; i < IO_EXPANDER_MIDI_ELEMENT_AMT; i++ )
-        {
-            IOexpander_put( IO_exp_midi_element[i].input_pin, IO_EXPANDER_PIN_OUTPUT_STATE_LOW );
-        }
-        IOexpander_write(true);
-        sleep_ms(1000);
-    }
 }
 
 
