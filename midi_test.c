@@ -57,10 +57,6 @@ int main(void)
 
     IO_expander_handler_init();
 
-    IOexpander_get_pin_types();
-    return 0;
-    
-
     led_setup();
     adc_setup();
     rot_sw_setup();
