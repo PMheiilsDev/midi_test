@@ -35,14 +35,14 @@ void process_midi_message(void)
             break;
 
             case 0xB0: // Control Change
-                sprintf( buffer+32*buffer_counter, "%d, %d, %d", data1, data2, channel);
-                if ( data1 == 85 )
+                for ( uint8_t i = 0; i < IO_EXPANDER_MIDI_ELEMENT_AMT; i++ )
                 {
-                    //buffer_int = data2;
-                }
-                else if ( data1 == 10 )
-                {
-                    buffer_int = data2;
+                    if ( IO_exp_midi_element[i].note == data1 )
+                    {
+                        IO_exp_midi_element[i].value = data2;
+                        
+                        IOexpander_put(IO_exp_midi_element[i].output_pin, !IO_exp_midi_element[i].value );
+                    }
                 }
             break;
 

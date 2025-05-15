@@ -13,6 +13,8 @@ typedef struct
     uint8_t input_pin: 4, output_pin: 4;
 
     uint8_t note;
+
+    uint8_t value;
 }
 IO_exp_midi_element_t;
 

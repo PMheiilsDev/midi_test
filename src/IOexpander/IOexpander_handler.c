@@ -80,19 +80,20 @@ void IO_expander_handler_handler()
 {
     for( uint i = 0; i < IO_EXPANDER_MIDI_ELEMENT_AMT; i++ )
     {
+        IO_exp_midi_element[i].state_pref = IO_exp_midi_element[i].state; 
         IO_exp_midi_element[i].state = IOexpander_get( IO_exp_midi_element[i].input_pin, false ); 
-
+        
         if( IO_exp_midi_element[i].state != IO_exp_midi_element[i].state_pref ) 
         {
-            IO_exp_midi_element[i].state_pref = IO_exp_midi_element[i].state; 
-            
-            uint8_t note_on[3] = {0b10110000 | 0, IO_exp_midi_element[i].note, IO_exp_midi_element[i].state*127};
-            tud_midi_stream_write(0, note_on, 3);
-
             if ( IO_exp_midi_element[i].state )
             {
-                IOexpander_put(IO_exp_midi_element[i].output_pin, !IOexpander_get(IO_exp_midi_element[i].output_pin, false) );
+                IO_exp_midi_element[i].value = (!IO_exp_midi_element[i].value)*127;
+                IOexpander_put(IO_exp_midi_element[i].output_pin, !IO_exp_midi_element[i].value );
             }
+
+            uint8_t note_on[3] = {0b10110000 | 0, IO_exp_midi_element[i].note, IO_exp_midi_element[i].value};
+            tud_midi_stream_write(0, note_on, 3);
+
         }
     }
 }

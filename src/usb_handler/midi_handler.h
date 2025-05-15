@@ -4,6 +4,8 @@
 
 #include "tusb.h"
 
+#include "IOexpander_handler.h"
+
 extern char* buffer;
 extern uint64_t buffer_counter;
 
