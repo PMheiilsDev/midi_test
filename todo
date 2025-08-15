@@ -1,27 +1,14 @@
-clean up main.c and move to sub files in sub folders 
 
-divide in:
- - USB
- - Inputs  
-  - Rotary SW 
-  - Potentiometer 
-  - Buttons 
- - Outputs 
-  - LEDs 
-  - WS2812 
-
-
-
-
-
-Info about midi feedback about the sliders it seams like the position of the slider in software can not be sent by voicemeeter (wait for email responce)
-
-It does work to send the state of a button in macro buttons to the device see: https://www.youtube.com/watch?v=1yUt_3Bsciw 
-
-Basically:
-System.SendMidi( "out1", "data", 90, 1, 7f/0 ); 
- - here the out1 might represent which device it is sent to
-
+The solution was to activate feedback by pressing the F button in midi mapping in voicemeeter
 
 
 Add a function that can decode midi measages 
+
+    there seems to be a problem of voicemeeter not sending data for the buttons in all cases like 
+    also the led state and the button state seem to get mixed up after using both the software and the hardware to change the state 
+
+    i believe there to be no fix when still using the state feature 
+        rising edge sends the data and toggles the state from 0 to 127 
+
+
+
