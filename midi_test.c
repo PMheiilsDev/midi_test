@@ -84,7 +84,7 @@ int main(void)
 
         tud_task(); // tinyusb device task
         button_task();
-        adc_task();
+        // adc_task(); // now done with repeating timer 
         rot_sw_task();
         ws2812_task();
 

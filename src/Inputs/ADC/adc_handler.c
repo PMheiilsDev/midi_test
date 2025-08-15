@@ -1,6 +1,7 @@
 #include "adc_handler.h"
 
 #include <stdlib.h>
+#include "pico/time.h"
 
 adc_channel_t adc_channels[MAX_ADC_CHANNELS] = 
 {
@@ -51,6 +52,10 @@ adc_channel_t adc_channels[MAX_ADC_CHANNELS] =
     }
 };
 
+uint8_t current_adc_channel = 0;
+
+repeating_timer_t adc_timer;
+
 void adc_setup(void)
 {
     adc_init();
@@ -71,6 +76,8 @@ void adc_setup(void)
         adc_channels[i].result_pref = 0;
         //memset(adc_channels[i].result_pref, 0, sizeof(adc_channels[i].result_pref));
     }
+
+    add_repeating_timer_us(-2500, adc_task, NULL, &adc_timer);
 }
 
 static uint8_t val_in_array( uint8_t *arr, uint8_t val, uint8_t size )
@@ -86,37 +93,40 @@ static uint8_t val_in_array( uint8_t *arr, uint8_t val, uint8_t size )
     return ctr;
 }
 
-void adc_task(void)
+bool adc_task( repeating_timer_t *rt )
 {
-    /// NOTE: all this is bull shit just check if the 4096 (12 bit value is changed by a bit less than (1>>7)<<12) [[maybe half ???]] 
 
-    for (int i = 0; i < MAX_ADC_CHANNELS; i++) 
+    
+    if ( adc_channels[current_adc_channel].is_mul_plex ) 
     {
-        if ( adc_channels[i].is_mul_plex ) 
-        {
-            adc_set_mul_plex_gpios(&adc_channels[i]);
-        }
-
-        adc_select_input(gpio_to_adc_channel(adc_channels[i].pin));
-
-        uint32_t adc_sum = 0;
-        for (int j = 0; j < adc_channels[i].num_reads; j++) 
-        {
-            adc_sum += adc_read();
-            sleep_us(100);
-        }
-
-        adc_channels[i].result = adc_sum/adc_channels[i].num_reads;
-
-        if ( abs(adc_channels[i].result_pref - adc_channels[i].result) >= (1<<(12-7))/4 ) // the /4 is there so that at the edges it alway reaches 127 / 0 and does not stop one before that 
-        {
-            adc_channels[i].result_pref = adc_channels[i].result;
-            adc_channels[i].res_7_bit = adc_channels[i].result>>(12-7);
-
-            uint8_t note_on[3] = {0b10110000 | 0, adc_channels[i].note, adc_channels[i].res_7_bit }; 
-            tud_midi_stream_write(0, note_on, 3);
-        }
+        adc_set_mul_plex_gpios(&adc_channels[current_adc_channel]);
     }
+
+    adc_select_input(gpio_to_adc_channel(adc_channels[current_adc_channel].pin));
+
+    uint32_t adc_sum = 0;
+    for (int j = 0; j < 1+0*adc_channels[current_adc_channel].num_reads; j++) 
+    {
+        adc_sum += adc_read();
+        // sleep_us(100);
+    }
+
+    adc_channels[current_adc_channel].result = adc_sum/1+0*adc_channels[current_adc_channel].num_reads;
+
+    if ( abs(adc_channels[current_adc_channel].result_pref - adc_channels[current_adc_channel].result) >= (1<<(12-7))/4 ) // the /4 is there so that at the edges it alway reaches 127 / 0 and does not stop one before that
+    {
+        adc_channels[current_adc_channel].result_pref = adc_channels[current_adc_channel].result;
+        adc_channels[current_adc_channel].res_7_bit = adc_channels[current_adc_channel].result>>(12-7);
+
+        uint8_t note_on[3] = {0b10110000 | 0, adc_channels[current_adc_channel].note, adc_channels[current_adc_channel].res_7_bit }; 
+        tud_midi_stream_write(0, note_on, 3);
+    }
+    
+    current_adc_channel++;
+    if (current_adc_channel >= MAX_ADC_CHANNELS) 
+        current_adc_channel = 0;
+
+    return true;
 }
 
 
