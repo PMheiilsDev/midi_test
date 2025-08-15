@@ -103,7 +103,7 @@ void adc_task(void)
         for (int j = 0; j < adc_channels[i].num_reads; j++) 
         {
             adc_sum += adc_read();
-            //sleep_us(100);
+            sleep_us(100);
         }
 
         adc_channels[i].result = adc_sum/adc_channels[i].num_reads;
