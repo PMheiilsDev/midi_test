@@ -10,5 +10,6 @@ Add a function that can decode midi measages
     i believe there to be no fix when still using the state feature 
         rising edge sends the data and toggles the state from 0 to 127 
 
+        seems like FF mode might work 
 
 
