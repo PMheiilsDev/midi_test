@@ -44,6 +44,13 @@ void process_midi_message(void)
                         IOexpander_put(IO_exp_midi_element[i].output_pin, !IO_exp_midi_element[i].value );
                     }
                 }
+                for ( uint8_t i = 0; i < MAX_ROTARY_SWITCHES; i++ )
+                {
+                    if ( rotary_switches[i].note == data1 )
+                    {
+                        rotary_switches[i].counter = data2;
+                    }
+                }
             break;
 
             case 0xC0: // Program Change (Only 1 data byte)
