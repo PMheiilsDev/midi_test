@@ -12,21 +12,24 @@ rotary_switch_t rotary_switches[MAX_ROTARY_SWITCHES] =
         .data_pin =  3,
         .note = 82,
         .counter = 0,
-        .last_sent = 0
+        .last_sent = 0,
+        .inverted = false
     },
     {
         .clk_pin =  5,
         .data_pin =  6,
         .note = 83,
         .counter = 0,
-        .last_sent = 0
+        .last_sent = 0,
+        .inverted = false
     },
     {
         .clk_pin =  8,
         .data_pin =  9,
         .note = 84,
         .counter = 0,
-        .last_sent = 0
+        .last_sent = 0,
+        .inverted = false
     }
 };
 
@@ -51,7 +54,7 @@ void rot_sw_setup(void)
 
 void update_counter(rotary_switch_t *rot_sw, bool up)
 {
-    if (up) 
+    if (rot_sw->inverted?up:!up) 
     {
         if (rot_sw->counter < 127) 
         {
@@ -82,24 +85,25 @@ void sw_interupt_callback(uint gpio, uint32_t events)
             {
                 if (gpio == rot_sw->clk_pin) 
                 {
+                    rot_sw->changed = true;
                     update_counter(rot_sw, data == 0);
                 } 
-                else if (gpio == rot_sw->data_pin) 
-                {
-                    update_counter(rot_sw, clk == 1);
-                }
+                // else if (gpio == rot_sw->data_pin) 
+                // {
+                //     update_counter(rot_sw, clk == 1);
+                // }
             } 
-            else if (events & GPIO_IRQ_EDGE_FALL) 
-            {
-                if (gpio == rot_sw->clk_pin) 
-                {
-                    update_counter(rot_sw, data == 1);
-                } 
-                else if (gpio == rot_sw->data_pin) 
-                {
-                    update_counter(rot_sw, clk == 0);
-                }
-            }
+            // else if (events & GPIO_IRQ_EDGE_FALL) 
+            // {
+            //     if (gpio == rot_sw->clk_pin) 
+            //     {
+            //         update_counter(rot_sw, data == 1);
+            //     } 
+            //     // else if (gpio == rot_sw->data_pin) 
+            //     // {
+            //     //     update_counter(rot_sw, clk == 0);
+            //     // }
+            // }
             break;
         }
     }
@@ -111,8 +115,9 @@ void rot_sw_task(void)
     for (int i = 0; i < MAX_ROTARY_SWITCHES; i++) 
     {
         rotary_switch_t *rot_sw = &rotary_switches[i];
-        if (rot_sw->last_sent != rot_sw->counter) 
+        if (rot_sw->changed == true) 
         {
+            rot_sw->changed = false;
             rot_sw->last_sent = rot_sw->counter;
             uint8_t note_on[3] = {0b10110000 | 0, rot_sw->note, 0x7F & rot_sw->counter};
             tud_midi_stream_write(0, note_on, 3);

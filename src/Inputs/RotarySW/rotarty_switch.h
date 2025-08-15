@@ -16,8 +16,10 @@ typedef struct
     uint8_t clk_pin;
     uint8_t data_pin;
     uint8_t note;
+    bool inverted;
     volatile uint8_t counter;
     volatile uint8_t last_sent;
+    volatile bool changed;
 } rotary_switch_t;
 
 extern rotary_switch_t rotary_switches[MAX_ROTARY_SWITCHES];
