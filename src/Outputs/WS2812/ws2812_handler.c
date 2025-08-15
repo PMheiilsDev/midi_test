@@ -5,6 +5,28 @@
 
 WS_2812_t WS_2812[WS2812_AMT] = 
 {
+    // ADCs
+    {
+        .limit = 127,
+        .value = &(adc_channels[4].res_7_bit),
+    },
+    {
+        .limit = 127,
+        .value = &(adc_channels[2].res_7_bit),
+    },
+    {
+        .limit = 127,
+        .value = &(adc_channels[1].res_7_bit),
+    },
+    {
+        .limit = 127,
+        .value = &(adc_channels[0].res_7_bit),
+    },
+    {
+        .limit = 127,
+        .value = &(adc_channels[3].res_7_bit),
+    },
+
     // Rotary Switches 
     {
         .limit = 127,
@@ -17,29 +39,7 @@ WS_2812_t WS_2812[WS2812_AMT] =
     {
         .limit = 127,
         .value = &(rotary_switches[2].counter),
-    },
-    {
-        .limit = 127,
-        .value = &(rotary_switches[3].counter),
-    },
-
-    // ADCs
-    {
-        .limit = 127,
-        .value = &(adc_channels[0].res_7_bit),
-    },
-    {
-        .limit = 127,
-        .value = &(adc_channels[1].res_7_bit),
-    },
-    {
-        .limit = 127,
-        .value = &(adc_channels[2].res_7_bit),
-    },
-    {
-        .limit = 127,
-        .value = &(adc_channels[3].res_7_bit),
-    },
+    }
 };
 
 typedef struct {
